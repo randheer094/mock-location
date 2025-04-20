@@ -57,7 +57,7 @@ class MockLocationService : Service() {
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Mocking Location")
             .setContentText("Active mock location service")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_location)
             .build()
 
         startForeground(NOTIFICATION_ID, notification)
