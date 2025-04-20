@@ -3,13 +3,9 @@ package dev.randheer094.dev.location
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.os.Build
-import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,26 +29,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.randheer094.dev.location.ui.theme.MockLocationTheme
+import dev.randheer094.dev.location.domain.MockLocation
+import dev.randheer094.dev.location.presentation.service.MockLocationService
+import dev.randheer094.dev.location.presentation.theme.MockLocationTheme
 import kotlinx.coroutines.launch
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            MockLocationTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LocationInputForm(
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .fillMaxSize()
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 private fun LocationInputForm(modifier: Modifier = Modifier) {

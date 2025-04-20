@@ -1,4 +1,4 @@
-package dev.randheer094.dev.location
+package dev.randheer094.dev.location.domain
 
 data class MockLocation(
     val name: String,

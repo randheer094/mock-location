@@ -1,4 +1,4 @@
-package dev.randheer094.dev.location
+package dev.randheer094.dev.location.presentation.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.SystemClock
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import dev.randheer094.dev.location.R
 
 class MockLocationService : Service() {
     private lateinit var locationManager: LocationManager
