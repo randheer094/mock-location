@@ -1,0 +1,36 @@
+package dev.randheer094.dev.location.app
+
+import android.app.Application
+import dev.randheer094.dev.location.di.dataSourceModule
+import dev.randheer094.dev.location.di.repositoryModule
+import dev.randheer094.dev.location.di.useCaseModule
+import dev.randheer094.dev.location.di.viewModelModule
+import dev.randheer094.dev.location.domain.MockLocationRepository
+import kotlinx.coroutines.runBlocking
+import org.koin.android.ext.android.get
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+
+class MockLocationApp : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@MockLocationApp)
+            modules(
+                listOf(
+                    dataSourceModule,
+                    repositoryModule,
+                    useCaseModule,
+                    viewModelModule,
+                )
+            )
+        }
+        hackToPreLoadData()
+    }
+
+    private fun hackToPreLoadData() {
+        val repo = get<MockLocationRepository>()
+        runBlocking { repo.initMockLocations() }
+    }
+}
