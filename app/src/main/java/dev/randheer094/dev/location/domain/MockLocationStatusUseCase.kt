@@ -7,21 +7,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.json.Json
 
-class GetMockLocationsUseCase(
+class MockLocationStatusUseCase(
     private val dataStore: DataStore<Preferences>,
-    private val json: Json,
 ) {
-    fun execute(): Flow<List<MockLocation>> {
+    fun execute(): Flow<Boolean> {
         return dataStore.data.map {
-            json.decodeFromString<List<MockLocation>>(
-                it[MOCK_LOCATIONS_DATA_KEY].orEmpty()
-            )
+            it[MOCK_LOCATION_STATUS] ?: false
         }
             .flowOn(Dispatchers.IO)
             .catch {
-                emit(emptyList())
+                emit(false)
             }
     }
 }

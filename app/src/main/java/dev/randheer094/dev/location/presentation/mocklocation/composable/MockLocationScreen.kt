@@ -6,19 +6,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.randheer094.dev.location.domain.MockLocation
 import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewModel
+import dev.randheer094.dev.location.presentation.mocklocation.state.Location
+import dev.randheer094.dev.location.presentation.mocklocation.state.MockLocationNStatus
+import dev.randheer094.dev.location.presentation.mocklocation.state.SectionHeader
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -35,28 +32,24 @@ fun MockLocationScreen(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         ) {
             items(state) {
-                MockLocationItem(
-                    state = it,
-                    modifier = Modifier.clickable { viewModel.onItemCLick(it) },
-                )
+                when (it) {
+                    is MockLocationNStatus -> MockLocationNStatus(
+                        state = it,
+                        modifier = Modifier.clickable {
+                            viewModel.setMockLocationStatus(!it.status)
+                        },
+                    )
+
+                    is SectionHeader -> SectionHeader(it)
+                    is Location -> Location(
+                        state = it,
+                        modifier = Modifier.clickable {
+                            viewModel.onItemCLick(it.location)
+                        },
+                    )
+                }
             }
         }
     }
 }
 
-@Composable
-private fun MockLocationItem(
-    state: MockLocation,
-    modifier: Modifier = Modifier,
-) {
-    ListItem(
-        modifier = modifier,
-        headlineContent = { Text(state.name) },
-        supportingContent = { Text("${state.lat}, ${state.long}") },
-        trailingContent = {
-            Icon(
-                imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                contentDescription = null,
-            )
-        })
-}

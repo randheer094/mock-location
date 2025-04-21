@@ -2,10 +2,10 @@ package dev.randheer094.dev.location.app
 
 import android.app.Application
 import dev.randheer094.dev.location.di.dataSourceModule
-import dev.randheer094.dev.location.di.repositoryModule
+import dev.randheer094.dev.location.di.mapperModule
 import dev.randheer094.dev.location.di.useCaseModule
 import dev.randheer094.dev.location.di.viewModelModule
-import dev.randheer094.dev.location.domain.MockLocationRepository
+import dev.randheer094.dev.location.domain.PreLoadMockLocationsUseCase
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
@@ -20,8 +20,8 @@ class MockLocationApp : Application() {
             modules(
                 listOf(
                     dataSourceModule,
-                    repositoryModule,
                     useCaseModule,
+                    mapperModule,
                     viewModelModule,
                 )
             )
@@ -30,7 +30,7 @@ class MockLocationApp : Application() {
     }
 
     private fun hackToPreLoadData() {
-        val repo = get<MockLocationRepository>()
-        runBlocking { repo.initMockLocations() }
+        val repo = get<PreLoadMockLocationsUseCase>()
+        runBlocking { repo.execute() }
     }
 }

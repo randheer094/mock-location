@@ -9,19 +9,19 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
-class GetMockLocationsUseCase(
+class SelectedMockLocationUseCase(
     private val dataStore: DataStore<Preferences>,
     private val json: Json,
 ) {
-    fun execute(): Flow<List<MockLocation>> {
+    fun execute(): Flow<MockLocation?> {
         return dataStore.data.map {
-            json.decodeFromString<List<MockLocation>>(
-                it[MOCK_LOCATIONS_DATA_KEY].orEmpty()
+            json.decodeFromString<MockLocation?>(
+                it[SELECTED_MOCK_LOCATION].orEmpty()
             )
         }
             .flowOn(Dispatchers.IO)
             .catch {
-                emit(emptyList())
+                emit(null)
             }
     }
 }

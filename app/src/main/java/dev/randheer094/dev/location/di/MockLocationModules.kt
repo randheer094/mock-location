@@ -4,10 +4,14 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import dev.randheer094.dev.location.data.MockLocationRepositoryImpl
 import dev.randheer094.dev.location.domain.GetMockLocationsUseCase
-import dev.randheer094.dev.location.domain.MockLocationRepository
+import dev.randheer094.dev.location.domain.MockLocationStatusUseCase
+import dev.randheer094.dev.location.domain.PreLoadMockLocationsUseCase
+import dev.randheer094.dev.location.domain.SelectMockLocationUseCase
+import dev.randheer094.dev.location.domain.SelectedMockLocationUseCase
+import dev.randheer094.dev.location.domain.SetMockLocationStatusUseCase
 import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewModel
+import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -26,14 +30,19 @@ val dataSourceModule = module {
     }
 }
 
-val repositoryModule = module {
-    single<MockLocationRepository> { MockLocationRepositoryImpl(get(), get(), get()) }
+val useCaseModule = module {
+    factory { PreLoadMockLocationsUseCase(get(), get()) }
+    factory { GetMockLocationsUseCase(get(), get()) }
+    factory { MockLocationStatusUseCase(get()) }
+    factory { SetMockLocationStatusUseCase(get()) }
+    factory { SelectMockLocationUseCase(get(), get()) }
+    factory { SelectedMockLocationUseCase(get(), get()) }
 }
 
-val useCaseModule = module {
-    factory { GetMockLocationsUseCase(get()) }
+val mapperModule = module {
+    single { UiStateMapper() }
 }
 
 val viewModelModule = module {
-    viewModel { MockLocationViewModel(get()) }
+    viewModel { MockLocationViewModel(get(), get(), get(), get(), get(), get()) }
 }
