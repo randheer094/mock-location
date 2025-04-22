@@ -43,8 +43,10 @@ class LocationUtils {
     }
 
     fun removeMockProvider(locationManager: LocationManager) {
-        providers.forEach {
-            locationManager.removeTestProvider(it)
+        kotlin.runCatching {
+            providers.forEach {
+                locationManager.removeTestProvider(it)
+            }
         }
     }
 

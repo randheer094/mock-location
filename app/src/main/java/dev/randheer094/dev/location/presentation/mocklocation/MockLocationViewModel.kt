@@ -71,6 +71,7 @@ class MockLocationViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             if (!locationUtils.addMockProvider(locationManager)) {
                 // Setup Error case
+                return@launch
             }
 
             locationUtils.setMockLocation(locationManager, location.lat, location.long)
