@@ -5,18 +5,88 @@
     "long": 103.8501362
   },
   {
+    "name": "Stockholm, Sweden",
+    "lat": 59.3383223,
+    "long": 18.0549621
+  },
+  {
+    "name": "İstanbul, Türkiye",
+    "lat": 41.0763745,
+    "long": 29.0114464
+  },
+  {
     "name": "Sai Wan, Hong Kong",
     "lat": 22.2848692,
     "long": 114.1410492
   },
   {
-    "name": "59200 Kuala Lumpur, Malaysia",
+    "name": "Kuala Lumpur, Malaysia",
     "lat": 3.1115726,
     "long": 101.6633107
   },
   {
-    "name": "111 60 Stockholm, Sweden",
-    "lat": 59.3383223,
-    "long": 18.0549621
+    "name": "Oslo, Norway",
+    "lat": 59.9271583,
+    "long": 10.7246093
+  },
+  {
+    "name": "Dhaka, Bangladesh",
+    "lat": 23.8516649,
+    "long": 90.2535154
+  },
+  {
+    "name": "Karachi, Pakistan",
+    "lat": 24.8653886,
+    "long": 67.0535651
+  },
+  {
+    "name": "Manila, Philippines",
+    "lat": 14.5574546,
+    "long": 120.9863673
+  },
+  {
+    "name": "Taipei City, Taiwan",
+    "lat": 25.0415595,
+    "long": 121.5630013
+  },
+  {
+    "name": "Bangkok, Thailand",
+    "lat": 10.1673778,
+    "long": 96.8285431
+  },
+  {
+    "name": "Helsinki, Finland",
+    "lat": 60.1984232,
+    "long": 24.9276845
+  },
+  {
+    "name": "GIA Tower, Cambodia",
+    "lat": 11.5526867,
+    "long": 104.9374995
+  },
+  {
+    "name": "Vientiane, Laos",
+    "lat": 17.9772614,
+    "long": 102.6132033
+  },
+  {
+    "name": "Yangon, Myanmar",
+    "lat": 16.8422397,
+    "long": 96.1543628
+  },
+  {
+    "name": "Prague, Czechia",
+    "lat": 50.1039621,
+    "long": 14.528223
+  },
+  {
+    "name": "Budapest, Hungary",
+    "lat": 47.4752135,
+    "long": 19.0691096
+  },
+  {
+    "name": "Wien, Austria",
+    "lat": 48.1972505,
+    "long": 16.3857097
   }
 ]

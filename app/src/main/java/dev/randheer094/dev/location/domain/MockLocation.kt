@@ -12,6 +12,5 @@ data class MockLocation(
     @SerialName("long") val long: Double
 )
 
-val MOCK_LOCATIONS_DATA_KEY = stringPreferencesKey("m_ls")
 val SELECTED_MOCK_LOCATION = stringPreferencesKey("m_l")
 val MOCK_LOCATION_STATUS = booleanPreferencesKey("m_l_e")

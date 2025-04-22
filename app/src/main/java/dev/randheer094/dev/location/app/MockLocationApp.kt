@@ -6,9 +6,6 @@ import dev.randheer094.dev.location.di.mapperModule
 import dev.randheer094.dev.location.di.useCaseModule
 import dev.randheer094.dev.location.di.utilsModule
 import dev.randheer094.dev.location.di.viewModelModule
-import dev.randheer094.dev.location.domain.PreLoadMockLocationsUseCase
-import kotlinx.coroutines.runBlocking
-import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -28,11 +25,5 @@ class MockLocationApp : Application() {
                 )
             )
         }
-        hackToPreLoadData()
-    }
-
-    private fun hackToPreLoadData() {
-        val repo = get<PreLoadMockLocationsUseCase>()
-        runBlocking { repo.execute() }
     }
 }

@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import dev.randheer094.dev.location.domain.GetMockLocationsUseCase
 import dev.randheer094.dev.location.domain.MockLocationStatusUseCase
-import dev.randheer094.dev.location.domain.PreLoadMockLocationsUseCase
 import dev.randheer094.dev.location.domain.SelectMockLocationUseCase
 import dev.randheer094.dev.location.domain.SelectedMockLocationUseCase
 import dev.randheer094.dev.location.domain.SetMockLocationStatusUseCase
@@ -33,7 +32,6 @@ val dataSourceModule = module {
 }
 
 val useCaseModule = module {
-    factory { PreLoadMockLocationsUseCase(get(), get()) }
     factory { GetMockLocationsUseCase(get(), get()) }
     factory { MockLocationStatusUseCase(get()) }
     factory { SetMockLocationStatusUseCase(get()) }

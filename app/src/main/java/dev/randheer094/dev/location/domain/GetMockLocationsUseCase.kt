@@ -1,27 +1,25 @@
 package dev.randheer094.dev.location.domain
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
+import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
 class GetMockLocationsUseCase(
-    private val dataStore: DataStore<Preferences>,
+    private val context: Context,
     private val json: Json,
 ) {
     fun execute(): Flow<List<MockLocation>> {
-        return dataStore.data.map {
-            json.decodeFromString<List<MockLocation>>(
-                it[MOCK_LOCATIONS_DATA_KEY].orEmpty()
-            )
-        }
-            .flowOn(Dispatchers.IO)
-            .catch {
+        return flow<List<MockLocation>> {
+            kotlin.runCatching {
+                context.assets.open("m_l.json").bufferedReader().use { reader ->
+                    emit(json.decodeFromString<List<MockLocation>>(reader.readText()))
+                }
+            }.onFailure {
                 emit(emptyList())
             }
+        }.flowOn(Dispatchers.IO)
     }
 }
