@@ -11,3 +11,16 @@ data class MockLocationNStatus(
 
 data class Location(val location: MockLocation) : UiItem
 data class SectionHeader(val text: String) : UiItem
+
+
+data class UiState(
+    val status: Boolean,
+    val items: List<UiItem>,
+) {
+    companion object {
+        val Empty = UiState(
+            status = false,
+            items = emptyList(),
+        )
+    }
+}

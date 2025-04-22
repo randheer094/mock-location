@@ -1,6 +1,7 @@
 package dev.randheer094.dev.location.di
 
 import android.content.Context
+import android.location.LocationManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -12,6 +13,7 @@ import dev.randheer094.dev.location.domain.SelectedMockLocationUseCase
 import dev.randheer094.dev.location.domain.SetMockLocationStatusUseCase
 import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewModel
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
+import dev.randheer094.dev.location.presentation.utils.LocationUtils
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -44,5 +46,12 @@ val mapperModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { MockLocationViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { MockLocationViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+}
+
+val utilsModule = module {
+    single { LocationUtils() }
+    factory {
+        get<Context>().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
 }

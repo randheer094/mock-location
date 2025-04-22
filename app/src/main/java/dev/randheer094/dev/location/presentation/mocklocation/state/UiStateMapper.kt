@@ -10,7 +10,7 @@ class UiStateMapper {
         status: Boolean,
         selected: MockLocation?,
         locations: List<MockLocation>,
-    ): List<UiItem> {
+    ): UiState {
 
         fun mockLocationNStatusItem() = MockLocationNStatus(
             location = selected,
@@ -18,14 +18,17 @@ class UiStateMapper {
         )
 
         return withContext(Dispatchers.Default) {
-            buildList {
-                add(SectionHeader("Mock location: (${if (status) "ON" else "OFF"})"))
-                add(mockLocationNStatusItem())
-                if (locations.isNotEmpty()) {
-                    add(SectionHeader("Select locations"))
-                }
-                addAll(locations.map { Location(it) })
-            }
+            UiState(
+                status = status,
+                items = buildList {
+                    add(SectionHeader("Mock location: (${if (status) "ON" else "OFF"})"))
+                    add(mockLocationNStatusItem())
+                    if (locations.isNotEmpty()) {
+                        add(SectionHeader("Select locations"))
+                    }
+                    addAll(locations.map { Location(it) })
+                },
+            )
         }
     }
 }

@@ -24,6 +24,7 @@ fun MockLocationScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
@@ -31,12 +32,12 @@ fun MockLocationScreen(
             modifier = Modifier.padding(innerPadding),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         ) {
-            items(state) {
+            items(state.items) {
                 when (it) {
                     is MockLocationNStatus -> MockLocationNStatus(
                         state = it,
                         modifier = Modifier.clickable {
-                            viewModel.setMockLocationStatus(!it.status)
+                            viewModel.setMockLocationNStatus(it.status, it.location)
                         },
                     )
 
