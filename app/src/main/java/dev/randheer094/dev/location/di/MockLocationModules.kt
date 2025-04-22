@@ -10,6 +10,8 @@ import dev.randheer094.dev.location.domain.MockLocationStatusUseCase
 import dev.randheer094.dev.location.domain.SelectMockLocationUseCase
 import dev.randheer094.dev.location.domain.SelectedMockLocationUseCase
 import dev.randheer094.dev.location.domain.SetMockLocationStatusUseCase
+import dev.randheer094.dev.location.domain.SetSetupInstructionStatusUseCase
+import dev.randheer094.dev.location.domain.SetupInstructionStatusUseCase
 import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewModel
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
@@ -37,6 +39,8 @@ val useCaseModule = module {
     factory { SetMockLocationStatusUseCase(get()) }
     factory { SelectMockLocationUseCase(get(), get()) }
     factory { SelectedMockLocationUseCase(get(), get()) }
+    factory { SetSetupInstructionStatusUseCase(get()) }
+    factory { SetupInstructionStatusUseCase(get()) }
 }
 
 val mapperModule = module {
@@ -44,7 +48,11 @@ val mapperModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { MockLocationViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel {
+        MockLocationViewModel(
+            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
+        )
+    }
 }
 
 val utilsModule = module {

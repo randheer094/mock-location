@@ -14,3 +14,4 @@ data class MockLocation(
 
 val SELECTED_MOCK_LOCATION = stringPreferencesKey("m_l")
 val MOCK_LOCATION_STATUS = booleanPreferencesKey("m_l_e")
+val SETUP_INSTRUCTION_STATUS = booleanPreferencesKey("setup")

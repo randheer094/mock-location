@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -23,6 +24,8 @@ import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewMo
 import dev.randheer094.dev.location.presentation.mocklocation.state.Location
 import dev.randheer094.dev.location.presentation.mocklocation.state.MockLocationNStatus
 import dev.randheer094.dev.location.presentation.mocklocation.state.SectionHeader
+import dev.randheer094.dev.location.presentation.mocklocation.state.UiState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -37,6 +40,21 @@ fun MockLocationScreen(
     )
     val coroutineScope = rememberCoroutineScope()
 
+    if (state.showInstructions) {
+        SetupInstruction { viewModel.onInstructionDismiss() }
+    } else {
+        ScreenContent(scaffoldState, coroutineScope, viewModel, state)
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun ScreenContent(
+    scaffoldState: BottomSheetScaffoldState,
+    coroutineScope: CoroutineScope,
+    viewModel: MockLocationViewModel,
+    state: UiState
+) {
     BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
         scaffoldState = scaffoldState,

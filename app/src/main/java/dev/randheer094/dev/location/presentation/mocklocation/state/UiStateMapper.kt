@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 class UiStateMapper {
 
     suspend fun mapToUiState(
+        showInstructions: Boolean,
         status: Boolean,
         selected: MockLocation?,
         locations: List<MockLocation>,
@@ -19,6 +20,7 @@ class UiStateMapper {
 
         return withContext(Dispatchers.Default) {
             UiState(
+                showInstructions = showInstructions,
                 status = status,
                 items = buildList {
                     add(SectionHeader("Mock location: (${if (status) "ON" else "OFF"})"))

@@ -9,15 +9,15 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
-class MockLocationStatusUseCase(
+class SetupInstructionStatusUseCase(
     private val dataStore: DataStore<Preferences>,
 ) {
     fun execute(): Flow<Boolean> {
         return dataStore.data.map {
-            it[MOCK_LOCATION_STATUS] ?: false
+            it[SETUP_INSTRUCTION_STATUS] ?: true
         }
             .flowOn(Dispatchers.IO)
-            .catch { emit(false) }
+            .catch { emit(true) }
             .distinctUntilChanged()
             .flowOn(Dispatchers.Default)
     }
