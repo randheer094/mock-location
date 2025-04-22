@@ -52,6 +52,15 @@ class MockLocationViewModel(
         }
     }
 
+    fun onManualLocation(location: MockLocation) {
+        viewModelScope.launch {
+            selectMockLocationUseCase.execute(location)
+            if (state.value.status) {
+                startMockLocation(location)
+            }
+        }
+    }
+
     fun setMockLocationNStatus(status: Boolean, location: MockLocation?) {
         if (status) {
             stopMockLocation()
