@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
@@ -48,5 +49,9 @@ fun MockLocationNStatus(
                 }
             },
         )
+    } else {
+        Button(onClick = onEdit) {
+            Text("Add Location or Select from list below")
+        }
     }
 }

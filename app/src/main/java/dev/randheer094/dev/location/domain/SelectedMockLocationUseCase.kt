@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
@@ -15,13 +16,15 @@ class SelectedMockLocationUseCase(
 ) {
     fun execute(): Flow<MockLocation?> {
         return dataStore.data.map {
-            json.decodeFromString<MockLocation?>(
-                it[SELECTED_MOCK_LOCATION].orEmpty()
-            )
+            kotlin.runCatching {
+                it[SELECTED_MOCK_LOCATION]?.let { loc ->
+                    json.decodeFromString<MockLocation>(loc)
+                }
+            }.getOrElse { null }
         }
             .flowOn(Dispatchers.IO)
-            .catch {
-                emit(null)
-            }
+            .catch { emit(null) }
+            .distinctUntilChanged()
+            .flowOn(Dispatchers.Default)
     }
 }
