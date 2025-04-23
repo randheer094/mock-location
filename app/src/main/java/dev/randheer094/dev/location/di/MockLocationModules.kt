@@ -15,6 +15,9 @@ import dev.randheer094.dev.location.domain.SetupInstructionStatusUseCase
 import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewModel
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
+import dev.randheer094.dev.location.presentation.utils.NotificationUtils
+import dev.randheer094.dev.location.presentation.utils.PermissionUtils
+import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -50,14 +53,17 @@ val mapperModule = module {
 val viewModelModule = module {
     viewModel {
         MockLocationViewModel(
-            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
         )
     }
 }
 
 val utilsModule = module {
     single { LocationUtils() }
+    single { NotificationUtils(get()) }
+    single { PermissionUtils(get()) }
     factory {
         get<Context>().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
+    factory { PermissionFlow.getInstance() }
 }

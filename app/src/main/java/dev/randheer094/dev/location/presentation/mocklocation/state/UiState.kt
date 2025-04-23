@@ -16,12 +16,14 @@ data class SectionHeader(val text: String) : UiItem
 data class UiState(
     val showInstructions: Boolean,
     val status: Boolean,
+    val hasNotificationPermission: Boolean,
     val items: List<UiItem>,
 ) {
     companion object {
         val Empty = UiState(
             showInstructions = false,
             status = false,
+            hasNotificationPermission = false,
             items = emptyList(),
         )
     }

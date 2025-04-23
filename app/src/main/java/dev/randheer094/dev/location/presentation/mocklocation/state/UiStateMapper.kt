@@ -1,6 +1,7 @@
 package dev.randheer094.dev.location.presentation.mocklocation.state
 
 import dev.randheer094.dev.location.domain.MockLocation
+import dev.shreyaspatil.permissionFlow.PermissionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -11,6 +12,7 @@ class UiStateMapper {
         status: Boolean,
         selected: MockLocation?,
         locations: List<MockLocation>,
+        hasNotificationPermission: Boolean,
     ): UiState {
 
         fun mockLocationNStatusItem() = MockLocationNStatus(
@@ -22,6 +24,7 @@ class UiStateMapper {
             UiState(
                 showInstructions = showInstructions,
                 status = status,
+                hasNotificationPermission = hasNotificationPermission,
                 items = buildList {
                     add(SectionHeader("Mock location: (${if (status) "ON" else "OFF"})"))
                     add(mockLocationNStatusItem())

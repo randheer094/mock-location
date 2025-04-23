@@ -13,8 +13,8 @@ android {
         applicationId = "dev.randheer094.dev.location"
         minSdk = 24
         targetSdk = 36
-        versionCode = 5
-        versionName = "0.1.1"
+        versionCode = 6
+        versionName = "0.1.2"
     }
 
     buildTypes {
@@ -55,4 +55,6 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.permission.flow.android)
+    implementation(libs.permission.flow.compose)
 }
