@@ -57,10 +57,10 @@ fun MockLocationScreen(
 
     LocationService(viewModel.eventFlow)
 
-    if (state.showInstructions) {
-        SetupInstruction { viewModel.onInstructionDismiss() }
-    } else {
-        ScreenContent(scaffoldState, coroutineScope, viewModel, state)
+    when {
+        state.showInstructions -> SetupInstruction { viewModel.onInstructionDismiss() }
+        !state.hasNotificationPermission -> NotificationPermission()
+        else -> ScreenContent(scaffoldState, coroutineScope, viewModel, state)
     }
 }
 

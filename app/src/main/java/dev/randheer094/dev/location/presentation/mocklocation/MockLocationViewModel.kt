@@ -14,6 +14,7 @@ import dev.randheer094.dev.location.domain.SetupInstructionStatusUseCase
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiState
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
+import dev.randheer094.dev.location.presentation.utils.PermissionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,6 +30,7 @@ class MockLocationViewModel(
     selectedMockLocationUseCase: SelectedMockLocationUseCase,
     mockLocationStatusUseCase: MockLocationStatusUseCase,
     setupInstructionStatusUseCase: SetupInstructionStatusUseCase,
+    persmissionUtils: PermissionUtils,
     private val selectMockLocationUseCase: SelectMockLocationUseCase,
     private val setMockLocationStatusUseCase: SetMockLocationStatusUseCase,
     private val setSetupInstructionStatusUseCase: SetSetupInstructionStatusUseCase,
@@ -48,8 +50,15 @@ class MockLocationViewModel(
         mockLocationStatusUseCase.execute(),
         selectedMockLocationUseCase.execute(),
         getMockLocationsUseCase.execute(),
-        transform = { showInstructions, status, selected, locations ->
-            uiStateMapper.mapToUiState(showInstructions, status, selected, locations)
+        persmissionUtils.getNotificationPermissionState(),
+        transform = { showInstructions, status, selected, locations, notiPermissionState ->
+            uiStateMapper.mapToUiState(
+                showInstructions = showInstructions,
+                status = status,
+                selected = selected,
+                locations = locations,
+                hasNotificationPermission = notiPermissionState.isGranted,
+            )
         }).distinctUntilChanged().flowOn(Dispatchers.Default).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
