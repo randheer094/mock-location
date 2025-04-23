@@ -17,10 +17,12 @@ class LocationUtils {
         const val SPEED_ACCURACY = 0f
     }
 
-    private val providers = setOf(
-        LocationManager.GPS_PROVIDER,
-        LocationManager.NETWORK_PROVIDER,
-    )
+    private val providers by lazy {
+        buildSet {
+            add(LocationManager.GPS_PROVIDER)
+            add(LocationManager.NETWORK_PROVIDER)
+        }
+    }
 
     fun addMockProvider(locationManager: LocationManager): Boolean {
         return try {
@@ -42,11 +44,14 @@ class LocationUtils {
         }
     }
 
-    fun removeMockProvider(locationManager: LocationManager) {
-        kotlin.runCatching {
+    fun removeMockProvider(locationManager: LocationManager): Boolean {
+        return try {
             providers.forEach {
                 locationManager.removeTestProvider(it)
             }
+            true
+        } catch (@Suppress("SwallowedException") e: SecurityException) {
+            false
         }
     }
 

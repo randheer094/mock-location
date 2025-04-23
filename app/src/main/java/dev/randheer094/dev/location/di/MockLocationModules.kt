@@ -15,6 +15,7 @@ import dev.randheer094.dev.location.domain.SetupInstructionStatusUseCase
 import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewModel
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
+import dev.randheer094.dev.location.presentation.utils.NotificationUtils
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -57,6 +58,7 @@ val viewModelModule = module {
 
 val utilsModule = module {
     single { LocationUtils() }
+    single { NotificationUtils(get()) }
     factory {
         get<Context>().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
