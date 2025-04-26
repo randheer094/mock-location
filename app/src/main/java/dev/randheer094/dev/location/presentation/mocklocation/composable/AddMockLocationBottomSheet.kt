@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddMockLocationBottomSheet(
+    modifier: Modifier = Modifier,
     onSubmit: (location: MockLocation) -> Unit,
 ) {
     var name by remember { mutableStateOf("") }
@@ -33,15 +34,25 @@ fun AddMockLocationBottomSheet(
     val scope = rememberCoroutineScope()
 
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Add Mock Location Details", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            "Add Mock Location Details",
+            style = MaterialTheme.typography.titleLarge,
+        )
 
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Name") },
+            label = {
+                Text(
+                    text = "Name",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -53,7 +64,12 @@ fun AddMockLocationBottomSheet(
         OutlinedTextField(
             value = latitude,
             onValueChange = { latitude = it },
-            label = { Text("Latitude") },
+            label = {
+                Text(
+                    text = "Latitude",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
@@ -65,7 +81,12 @@ fun AddMockLocationBottomSheet(
         OutlinedTextField(
             value = longitude,
             onValueChange = { longitude = it },
-            label = { Text("Longitude") },
+            label = {
+                Text(
+                    text = "Longitude",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
@@ -77,7 +98,8 @@ fun AddMockLocationBottomSheet(
         if (error != null) {
             Text(
                 text = error!!,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
 
@@ -100,7 +122,10 @@ fun AddMockLocationBottomSheet(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Set Mock Location")
+            Text(
+                text = "Set Mock Location",
+                style = MaterialTheme.typography.bodyLarge,
+            )
         }
     }
 }

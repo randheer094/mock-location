@@ -16,8 +16,12 @@ fun Location(
 ) {
     ListItem(
         modifier = modifier,
-        headlineContent = { Text(state.location.name) },
-        supportingContent = { Text("${state.location.lat}, ${state.location.long}") },
+        headlineContent = {
+            Text(state.location.name)
+        },
+        supportingContent = {
+            Text("${state.location.lat}, ${state.location.long}")
+        },
         trailingContent = {
             Icon(
                 imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,

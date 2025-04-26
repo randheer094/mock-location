@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
@@ -136,7 +137,11 @@ private fun ScreenContent(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
         sheetContent = {
-            AddMockLocationBottomSheet {
+            AddMockLocationBottomSheet(
+                modifier = Modifier.padding(
+                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+                ),
+            ) {
                 coroutineScope.launch {
                     viewModel.onManualLocation(it)
                     scaffoldState.bottomSheetState.hide()
@@ -149,6 +154,7 @@ private fun ScreenContent(
                 .padding(innerPadding)
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
+                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
                 ),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         ) {

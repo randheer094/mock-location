@@ -25,7 +25,7 @@ fun SetupInstruction(onGotIt: () -> Unit) {
         ) {
             Text(
                 text = "Setup Instructions",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleLarge,
             )
 
             Text(
@@ -38,7 +38,12 @@ fun SetupInstruction(onGotIt: () -> Unit) {
                 style = MaterialTheme.typography.bodyLarge,
             )
 
-            Button(onClick = onGotIt) { Text("Got it!") }
+            Button(onClick = onGotIt) {
+                Text(
+                    text = "Got it!",
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
         }
     }
 }

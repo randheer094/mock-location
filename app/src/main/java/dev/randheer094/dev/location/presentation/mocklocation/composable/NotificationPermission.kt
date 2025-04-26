@@ -30,7 +30,7 @@ fun NotificationPermission() {
         ) {
             Text(
                 text = "Notification Permission required",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleLarge,
             )
 
             Text(
@@ -47,7 +47,12 @@ fun NotificationPermission() {
                         permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                     }
                 },
-            ) { Text("Allow") }
+            ) {
+                Text(
+                    text = "Allow Notifications!",
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
         }
     }
 }

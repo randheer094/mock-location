@@ -1,6 +1,7 @@
 package dev.randheer094.dev.location.presentation.mocklocation.composable
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,5 +13,9 @@ fun SectionHeader(
     state: SectionHeader,
     modifier: Modifier = Modifier,
 ) {
-    Text(state.text, modifier.padding(vertical = 16.dp))
+    Text(
+        text = state.text,
+        style = MaterialTheme.typography.titleLarge,
+        modifier = modifier.padding(vertical = 16.dp),
+    )
 }
