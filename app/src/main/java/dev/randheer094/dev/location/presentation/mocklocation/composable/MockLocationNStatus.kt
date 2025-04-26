@@ -2,6 +2,7 @@ package dev.randheer094.dev.location.presentation.mocklocation.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Edit
@@ -58,7 +59,10 @@ fun MockLocationNStatus(
             },
         )
     } else {
-        Button(onClick = onEdit) {
+        Button(
+            onClick = onEdit,
+            modifier = modifier.padding(horizontal = 16.dp),
+        ) {
             Text(
                 text = "Add Location or Select from list below",
                 style = MaterialTheme.typography.bodyLarge,

@@ -6,19 +6,15 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -51,17 +47,22 @@ fun MockLocationScreen(
     viewModel: MockLocationViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberModalBottomSheetState(),
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
     )
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     LocationService(viewModel.eventFlow)
 
     when {
         state.showInstructions -> SetupInstruction { viewModel.onInstructionDismiss() }
         !state.hasNotificationPermission -> NotificationPermission()
-        else -> ScreenContent(scaffoldState, coroutineScope, viewModel, state)
+        else -> ScreenContent(
+            sheetState = sheetState,
+            scope = scope,
+            viewModel = viewModel,
+            state = state,
+        )
     }
 }
 
@@ -127,57 +128,55 @@ private fun LocationService(eventFlow: SharedFlow<Event>) {
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun ScreenContent(
-    scaffoldState: BottomSheetScaffoldState,
-    coroutineScope: CoroutineScope,
+    sheetState: SheetState,
+    scope: CoroutineScope,
     viewModel: MockLocationViewModel,
-    state: UiState
+    state: UiState,
 ) {
-    BottomSheetScaffold(
-        modifier = Modifier.fillMaxSize(),
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 0.dp,
-        sheetContent = {
-            AddMockLocationBottomSheet(
-                modifier = Modifier.padding(
-                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
-                ),
+    Box {
+        Scaffold { padding ->
+            LazyColumn(
+                modifier = Modifier.padding(padding),
+                contentPadding = PaddingValues(vertical = 12.dp),
             ) {
-                coroutineScope.launch {
-                    viewModel.onManualLocation(it)
-                    scaffoldState.bottomSheetState.hide()
+                items(state.items) {
+                    when (it) {
+                        is MockLocationNStatus -> MockLocationNStatus(
+                            state = it,
+                            onEdit = {
+                                scope.launch {
+                                    sheetState.show()
+                                }
+                            },
+                        ) {
+                            viewModel.setMockLocationNStatus(it.status, it.location)
+                        }
+
+                        is SectionHeader -> SectionHeader(it)
+                        is Location -> Location(
+                            state = it,
+                            modifier = Modifier.clickable {
+                                viewModel.onItemCLick(it.location)
+                            },
+                        )
+                    }
                 }
             }
         }
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(
-                    top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
-                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
-                ),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        ) {
-            items(state.items) {
-                when (it) {
-                    is MockLocationNStatus -> MockLocationNStatus(
-                        state = it,
-                        onEdit = {
-                            coroutineScope.launch {
-                                scaffoldState.bottomSheetState.expand()
-                            }
-                        },
-                    ) {
-                        viewModel.setMockLocationNStatus(it.status, it.location)
+        if (sheetState.isVisible) {
+            ModalBottomSheet(
+                sheetState = sheetState,
+                onDismissRequest = {
+                    scope.launch {
+                        sheetState.hide()
                     }
-
-                    is SectionHeader -> SectionHeader(it)
-                    is Location -> Location(
-                        state = it,
-                        modifier = Modifier.clickable {
-                            viewModel.onItemCLick(it.location)
-                        },
-                    )
+                }
+            ) {
+                AddMockLocationBottomSheet {
+                    scope.launch {
+                        viewModel.onManualLocation(it)
+                        sheetState.hide()
+                    }
                 }
             }
         }
