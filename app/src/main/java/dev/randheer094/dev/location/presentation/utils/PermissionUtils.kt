@@ -17,6 +17,7 @@ class PermissionUtils(
             PermissionState(
                 permission = "android.permission.POST_NOTIFICATIONS",
                 isGranted = true,
+                isRationaleRequired = false,
             )
         )
     }

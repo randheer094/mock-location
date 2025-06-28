@@ -13,8 +13,8 @@ android {
         applicationId = "dev.randheer094.dev.location"
         minSdk = 24
         targetSdk = 36
-        versionCode = 7
-        versionName = "0.1.3"
+        versionCode = 8
+        versionName = "0.1.4"
     }
 
     buildTypes {
