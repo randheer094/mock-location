@@ -12,13 +12,9 @@ import kotlinx.coroutines.flow.map
 class SetupInstructionStatusUseCase(
     private val dataStore: DataStore<Preferences>,
 ) {
-    fun execute(): Flow<Boolean> {
-        return dataStore.data.map {
-            it[SETUP_INSTRUCTION_STATUS] ?: true
-        }
-            .flowOn(Dispatchers.IO)
-            .catch { emit(true) }
-            .distinctUntilChanged()
-            .flowOn(Dispatchers.Default)
-    }
+    fun execute(): Flow<Boolean> = dataStore.data
+        .map { it[SETUP_INSTRUCTION_STATUS] ?: true }
+        .distinctUntilChanged()
+        .catch { emit(true) }
+        .flowOn(Dispatchers.IO)
 }

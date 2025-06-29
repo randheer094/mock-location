@@ -23,20 +23,19 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 
+
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = "m_l"
 )
 
-val dataSourceModule = module {
+val appModule = module {
     single { get<Context>().dataStore }
     single {
         Json {
             ignoreUnknownKeys = true
         }
     }
-}
 
-val useCaseModule = module {
     factory { GetMockLocationsUseCase(get(), get()) }
     factory { MockLocationStatusUseCase(get()) }
     factory { SetMockLocationStatusUseCase(get()) }
@@ -44,21 +43,15 @@ val useCaseModule = module {
     factory { SelectedMockLocationUseCase(get(), get()) }
     factory { SetSetupInstructionStatusUseCase(get()) }
     factory { SetupInstructionStatusUseCase(get()) }
-}
 
-val mapperModule = module {
     single { UiStateMapper() }
-}
 
-val viewModelModule = module {
     viewModel {
         MockLocationViewModel(
             get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
         )
     }
-}
 
-val utilsModule = module {
     single { LocationUtils() }
     single { NotificationUtils(get()) }
     single { PermissionUtils(get()) }

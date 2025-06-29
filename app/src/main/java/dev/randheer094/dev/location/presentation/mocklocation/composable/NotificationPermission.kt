@@ -18,14 +18,11 @@ import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLaun
 @Composable
 fun NotificationPermission() {
     val permissionLauncher = rememberPermissionFlowRequestLauncher()
-    Scaffold { padding ->
+    Scaffold {
         Column(
             modifier = Modifier
-                .padding(padding)
-                .padding(
-                    vertical = 12.dp,
-                    horizontal = 16.dp,
-                ),
+                .padding(it)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(

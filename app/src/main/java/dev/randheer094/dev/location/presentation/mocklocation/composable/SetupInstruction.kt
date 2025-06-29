@@ -13,14 +13,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SetupInstruction(onGotIt: () -> Unit) {
-    Scaffold { padding ->
+    Scaffold {
         Column(
             modifier = Modifier
-                .padding(padding)
-                .padding(
-                    vertical = 12.dp,
-                    horizontal = 16.dp,
-                ),
+                .padding(it)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(

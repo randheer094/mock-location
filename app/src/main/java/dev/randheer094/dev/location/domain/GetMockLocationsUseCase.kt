@@ -11,15 +11,12 @@ class GetMockLocationsUseCase(
     private val context: Context,
     private val json: Json,
 ) {
-    fun execute(): Flow<List<MockLocation>> {
-        return flow<List<MockLocation>> {
-            kotlin.runCatching {
-                context.assets.open("m_l.json").bufferedReader().use { reader ->
-                    emit(json.decodeFromString<List<MockLocation>>(reader.readText()))
-                }
-            }.onFailure {
-                emit(emptyList())
+    fun execute(): Flow<List<MockLocation>> = flow {
+        val locations = runCatching {
+            context.assets.open("m_l.json").bufferedReader().use { reader ->
+                json.decodeFromString<List<MockLocation>>(reader.readText())
             }
-        }.flowOn(Dispatchers.IO)
-    }
+        }.getOrElse { emptyList() }
+        emit(locations)
+    }.flowOn(Dispatchers.IO)
 }

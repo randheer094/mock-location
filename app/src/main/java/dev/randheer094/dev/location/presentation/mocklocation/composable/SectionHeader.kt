@@ -16,6 +16,6 @@ fun SectionHeader(
     Text(
         text = state.text,
         style = MaterialTheme.typography.titleLarge,
-        modifier = modifier.padding(all = 16.dp),
+        modifier = modifier.padding(16.dp),
     )
 }
