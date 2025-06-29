@@ -28,16 +28,10 @@ fun MockLocationNStatus(
     if (state.location != null) {
         ListItem(
             modifier = modifier,
-            headlineContent = {
-                Text(state.location.name)
-            },
-            supportingContent = {
-                Text("${state.location.lat}, ${state.location.long}")
-            },
+            headlineContent = { Text(state.location.name) },
+            supportingContent = { Text("${state.location.lat}, ${state.location.long}") },
             trailingContent = {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     IconButton(onClick = onEdit) {
                         Icon(
                             imageVector = Icons.Default.Edit,
@@ -47,11 +41,7 @@ fun MockLocationNStatus(
 
                     IconButton(onClick = onStartStop) {
                         Icon(
-                            imageVector = if (state.status) {
-                                Icons.Default.Clear
-                            } else {
-                                Icons.Rounded.PlayArrow
-                            },
+                            imageVector = if (state.status) Icons.Default.Clear else Icons.Rounded.PlayArrow,
                             contentDescription = null,
                         )
                     }

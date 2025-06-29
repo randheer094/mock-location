@@ -3,7 +3,6 @@ package dev.randheer094.dev.location.presentation.utils
 import android.location.Location
 import android.location.LocationManager
 import android.location.provider.ProviderProperties
-import android.os.Build
 import android.os.SystemClock
 
 class LocationUtils {
@@ -18,42 +17,25 @@ class LocationUtils {
     }
 
     private val providers by lazy {
-        buildSet {
-            add(LocationManager.GPS_PROVIDER)
-            add(LocationManager.NETWORK_PROVIDER)
-        }
+        listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
     }
 
-    fun addMockProvider(locationManager: LocationManager): Boolean {
-        return try {
-            with(locationManager) {
-                providers.forEach {
-                    addTestProvider(
-                        it,
-                        false, false, false, false,
-                        false, true, true,
-                        getPowerUsageProperty(),
-                        getAccuracyProperty()
-                    )
-                    setTestProviderEnabled(it, true)
-                }
-            }
-            true
-        } catch (@Suppress("SwallowedException") e: SecurityException) {
-            false
+    fun addMockProvider(locationManager: LocationManager): Boolean = runCatching {
+        providers.forEach {
+            locationManager.addTestProvider(
+                it,
+                false, false, false, false,
+                false, true, true,
+                ProviderProperties.POWER_USAGE_LOW,
+                ProviderProperties.ACCURACY_FINE
+            )
+            locationManager.setTestProviderEnabled(it, true)
         }
-    }
+    }.isSuccess
 
-    fun removeMockProvider(locationManager: LocationManager): Boolean {
-        return try {
-            providers.forEach {
-                locationManager.removeTestProvider(it)
-            }
-            true
-        } catch (@Suppress("SwallowedException") e: SecurityException) {
-            false
-        }
-    }
+    fun removeMockProvider(locationManager: LocationManager): Boolean = runCatching {
+        providers.forEach(locationManager::removeTestProvider)
+    }.isSuccess
 
     fun setMockLocation(
         locationManager: LocationManager,
@@ -68,27 +50,13 @@ class LocationUtils {
                 bearing = DEFAULT_BEARING
                 altitude = DEFAULT_ALTITUDE
                 speed = DEFAULT_SPEED
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    bearingAccuracyDegrees = BEARING_ACCURACY
-                    verticalAccuracyMeters = VERTICAL_ACCURACY
-                    speedAccuracyMetersPerSecond = SPEED_ACCURACY
-                }
+                bearingAccuracyDegrees = BEARING_ACCURACY
+                verticalAccuracyMeters = VERTICAL_ACCURACY
+                speedAccuracyMetersPerSecond = SPEED_ACCURACY
                 time = System.currentTimeMillis()
                 elapsedRealtimeNanos = SystemClock.elapsedRealtimeNanos()
             }
             locationManager.setTestProviderLocation(it, location)
         }
-    }
-
-    private fun getPowerUsageProperty() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        ProviderProperties.POWER_USAGE_LOW
-    } else {
-        1 // PRE_S_POWER_USAGE_LOW
-    }
-
-    private fun getAccuracyProperty() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        ProviderProperties.ACCURACY_FINE
-    } else {
-        0 // PRE_S_ACCURACY_FINE
     }
 }

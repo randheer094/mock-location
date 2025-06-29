@@ -12,13 +12,9 @@ import kotlinx.coroutines.flow.map
 class MockLocationStatusUseCase(
     private val dataStore: DataStore<Preferences>,
 ) {
-    fun execute(): Flow<Boolean> {
-        return dataStore.data.map {
-            it[MOCK_LOCATION_STATUS] ?: false
-        }
-            .flowOn(Dispatchers.IO)
-            .catch { emit(false) }
-            .distinctUntilChanged()
-            .flowOn(Dispatchers.Default)
-    }
+    fun execute(): Flow<Boolean> = dataStore.data
+        .map { it[MOCK_LOCATION_STATUS] ?: false }
+        .distinctUntilChanged()
+        .catch { emit(false) }
+        .flowOn(Dispatchers.IO)
 }
