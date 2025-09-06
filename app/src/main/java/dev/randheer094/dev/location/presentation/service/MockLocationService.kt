@@ -78,7 +78,7 @@ class MockLocationService : Service(), IMockLocationService {
     override fun isMocking(): Boolean = job?.isActive == true
 
     private fun startPeriodicUpdates(location: MockLocation) {
-        job = serviceScope.launch {
+        job = serviceScope.launch(Dispatchers.IO) {
             while (isActive) {
                 locationUtils.setMockLocation(locationManager, location.lat, location.long)
                 delay(MOCK_LOCATION_UPDATE_INTERVAL_MS)

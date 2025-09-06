@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -137,6 +138,7 @@ private fun ScreenContent(
                 }
             }
         }
+        BackHandler(sheetState.isVisible) { scope.launch { sheetState.hide() } }
     }
 }
 
