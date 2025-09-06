@@ -14,17 +14,13 @@ class SelectedMockLocationUseCase(
     private val dataStore: DataStore<Preferences>,
     private val json: Json,
 ) {
-    fun execute(): Flow<MockLocation?> {
-        return dataStore.data.map {
-            kotlin.runCatching {
-                it[SELECTED_MOCK_LOCATION]?.let { loc ->
-                    json.decodeFromString<MockLocation>(loc)
-                }
-            }.getOrElse { null }
+    fun execute(): Flow<MockLocation?> = dataStore.data
+        .map {
+            it[SELECTED_MOCK_LOCATION]?.let {
+                json.decodeFromString<MockLocation>(it)
+            }
         }
-            .flowOn(Dispatchers.IO)
-            .catch { emit(null) }
-            .distinctUntilChanged()
-            .flowOn(Dispatchers.Default)
-    }
+        .distinctUntilChanged()
+        .catch { emit(null) }
+        .flowOn(Dispatchers.IO)
 }
