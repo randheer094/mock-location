@@ -11,12 +11,15 @@ class GetMockLocationsUseCase(
     private val context: Context,
     private val json: Json,
 ) {
+    // Cache the parsed locations to avoid repeated file I/O and parsing
+    private var cachedLocations: List<MockLocation>? = null
+    
     fun execute(): Flow<List<MockLocation>> = flow {
-        val locations = runCatching {
+        val locations = cachedLocations ?: runCatching {
             context.assets.open("m_l.json").bufferedReader().use { reader ->
                 json.decodeFromString<List<MockLocation>>(reader.readText())
             }
-        }.getOrElse { emptyList() }
+        }.getOrElse { emptyList() }.also { cachedLocations = it }
         emit(locations)
     }.flowOn(Dispatchers.IO)
 }

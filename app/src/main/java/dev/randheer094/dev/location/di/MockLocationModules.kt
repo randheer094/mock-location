@@ -44,7 +44,8 @@ val appModule = module {
     factory { SetSetupInstructionStatusUseCase(get()) }
     factory { SetupInstructionStatusUseCase(get()) }
 
-    single { UiStateMapper() }
+    // UiStateMapper is now an object, no need to instantiate
+    single { UiStateMapper }
 
     viewModel {
         MockLocationViewModel(
@@ -52,11 +53,12 @@ val appModule = module {
         )
     }
 
+    // Utils as singletons for consistency and memory efficiency
     single { LocationUtils() }
     single { NotificationUtils(get()) }
     single { PermissionUtils(get()) }
-    factory {
+    single {
         get<Context>().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
-    factory { PermissionFlow.getInstance() }
+    single { PermissionFlow.getInstance() }
 }

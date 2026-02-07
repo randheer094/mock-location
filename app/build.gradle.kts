@@ -29,6 +29,9 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -37,9 +40,6 @@ android {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -58,7 +58,6 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.permission.flow.android)
     implementation(libs.permission.flow.compose)
 }

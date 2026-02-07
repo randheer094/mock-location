@@ -2,7 +2,7 @@ package dev.randheer094.dev.location.presentation.mocklocation.state
 
 import dev.randheer094.dev.location.domain.MockLocation
 
-class UiStateMapper {
+object UiStateMapper {
 
     fun mapToUiState(
         showInstructions: Boolean,

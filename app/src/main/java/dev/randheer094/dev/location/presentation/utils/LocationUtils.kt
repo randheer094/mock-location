@@ -14,11 +14,12 @@ class LocationUtils {
         const val BEARING_ACCURACY = 10f
         const val VERTICAL_ACCURACY = 15f
         const val SPEED_ACCURACY = 0f
+        
+        // Providers as constant list to avoid repeated allocation
+        private val PROVIDERS = listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
     }
 
-    private val providers by lazy {
-        listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
-    }
+    private val providers = PROVIDERS
 
     fun addMockProvider(locationManager: LocationManager): Boolean = runCatching {
         providers.forEach {
