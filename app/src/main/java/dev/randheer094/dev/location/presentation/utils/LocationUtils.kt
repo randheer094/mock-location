@@ -3,6 +3,7 @@ package dev.randheer094.dev.location.presentation.utils
 import android.location.Location
 import android.location.LocationManager
 import android.location.provider.ProviderProperties
+import android.os.Build
 import android.os.SystemClock
 
 class LocationUtils {
@@ -51,11 +52,15 @@ class LocationUtils {
                 bearing = DEFAULT_BEARING
                 altitude = DEFAULT_ALTITUDE
                 speed = DEFAULT_SPEED
-                bearingAccuracyDegrees = BEARING_ACCURACY
-                verticalAccuracyMeters = VERTICAL_ACCURACY
-                speedAccuracyMetersPerSecond = SPEED_ACCURACY
                 time = System.currentTimeMillis()
                 elapsedRealtimeNanos = SystemClock.elapsedRealtimeNanos()
+
+                // Set newer APIs only if available
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    bearingAccuracyDegrees = BEARING_ACCURACY
+                    verticalAccuracyMeters = VERTICAL_ACCURACY
+                    speedAccuracyMetersPerSecond = SPEED_ACCURACY
+                }
             }
             locationManager.setTestProviderLocation(it, location)
         }

@@ -28,9 +28,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import dev.randheer094.dev.location.domain.SearchResult
 import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewModel
 import dev.randheer094.dev.location.presentation.mocklocation.state.Location
 import dev.randheer094.dev.location.presentation.mocklocation.state.MockLocationNStatus
+import dev.randheer094.dev.location.presentation.mocklocation.state.SearchLocation
 import dev.randheer094.dev.location.presentation.mocklocation.state.SectionHeader
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiState
 import dev.randheer094.dev.location.presentation.service.IMockLocationService
@@ -102,11 +104,30 @@ private fun ScreenContent(
     service: IMockLocationService?,
 ) {
     Box {
-        Scaffold {
+        Scaffold { paddingValues ->
             LazyColumn(
-                modifier = Modifier.padding(it),
+                modifier = Modifier.padding(paddingValues),
                 contentPadding = PaddingValues(vertical = 12.dp),
             ) {
+                // Add search bar at the top
+                item {
+                    SearchBar(
+                        query = state.searchQuery,
+                        onQueryChange = viewModel::updateSearchQuery,
+                        onSearch = {
+                            if (it.isNotBlank()) {
+                                viewModel.startSearching()
+                            } else {
+                                viewModel.stopSearching()
+                            }
+                        },
+                        onClear = {
+                            viewModel.stopSearching()
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+
                 items(state.items) { item ->
                     when (item) {
                         is MockLocationNStatus -> MockLocationNStatus(
@@ -120,6 +141,12 @@ private fun ScreenContent(
                         is Location -> Location(
                             state = item,
                             modifier = Modifier.clickable { viewModel.onItemClick(item.location, service) },
+                        )
+                        is SearchLocation -> SearchLocationItem(
+                            state = item,
+                            onClick = { searchResult ->
+                                viewModel.selectSearchResult(searchResult, service)
+                            }
                         )
                     }
                 }
