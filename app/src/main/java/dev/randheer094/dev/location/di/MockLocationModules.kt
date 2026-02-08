@@ -7,11 +7,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import dev.randheer094.dev.location.domain.GetMockLocationsUseCase
 import dev.randheer094.dev.location.domain.MockLocationStatusUseCase
+import dev.randheer094.dev.location.domain.SearchLocationsUseCase
 import dev.randheer094.dev.location.domain.SelectMockLocationUseCase
 import dev.randheer094.dev.location.domain.SelectedMockLocationUseCase
 import dev.randheer094.dev.location.domain.SetMockLocationStatusUseCase
 import dev.randheer094.dev.location.domain.SetSetupInstructionStatusUseCase
 import dev.randheer094.dev.location.domain.SetupInstructionStatusUseCase
+import dev.randheer094.dev.location.domain.LocationSearchService
 import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewModel
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
@@ -43,13 +45,14 @@ val appModule = module {
     factory { SelectedMockLocationUseCase(get(), get()) }
     factory { SetSetupInstructionStatusUseCase(get()) }
     factory { SetupInstructionStatusUseCase(get()) }
+    factory { SearchLocationsUseCase(get()) }
 
     // UiStateMapper is now an object, no need to instantiate
     single { UiStateMapper }
 
     viewModel {
         MockLocationViewModel(
-            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
         )
     }
 
@@ -57,6 +60,7 @@ val appModule = module {
     single { LocationUtils() }
     single { NotificationUtils(get()) }
     single { PermissionUtils(get()) }
+    single { LocationSearchService() }
     single {
         get<Context>().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
