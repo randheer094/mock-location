@@ -63,3 +63,12 @@ The app currently displays a fixed list of 19 predefined locations. Users can on
 - More flexible location selection
 - Ability to find any location globally
 - Reduced manual coordinate entry
+
+## Pending Improvement Tasks
+
+| Task | Status | Details |
+|------|--------|--------|
+| Location History Tracking | Not Started | [Detailed Plan](next/02_location_history_tracking.md) |
+| Error Handling Improvements | Not Started | [Detailed Plan](next/03_error_handling_improvements.md) |
+| Advanced Location Validation | Not Started | [Detailed Plan](next/05_advanced_location_validation.md) |
+| Export/Import Functionality | Not Started | [Detailed Plan](next/06_export_import_functionality.md) |
