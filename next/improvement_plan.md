@@ -13,4 +13,3 @@ This document serves as the central index for all improvement plans in the `next
 | [Detailed Setup Instructions](next/04_detailed_setup_instructions.md) | Not Started | Comprehensive setup guide for location features |
 | [Advanced Location Validation](next/05_advanced_location_validation.md) | Not Started | Improvements to location validation accuracy |
 | [Export/Import Functionality](next/06_export_import_functionality.md) | Not Started | Ability to export/import location data |
-| [Overall Status](next/improvement_plan.md) | Completed | Central index for all improvement plans |
