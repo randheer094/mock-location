@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.MockLocation" parent="android:Theme.Material.Light.NoActionBar" />
+    <!--
+        Compose-only app: we don't use AppCompat/XML widgets so we anchor to the system
+        Material theme and let Compose draw everything. DayNight is provided by the -night
+        resource qualifier below, which flips the background to Material Dark.
+    -->
+    <style name="Theme.MockLocation" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
 </resources>

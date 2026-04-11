@@ -15,9 +15,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import dev.randheer094.dev.location.R
 import dev.randheer094.dev.location.domain.MockLocation
 
 @Composable
@@ -30,6 +32,9 @@ fun AddMockLocationBottomSheet(
     var longitude by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
 
+    val errorMessage = stringResource(R.string.error_invalid_lat_long)
+    val manualPrefixTemplate = stringResource(R.string.manual_location_prefix)
+
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
@@ -37,7 +42,7 @@ fun AddMockLocationBottomSheet(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            "Add Mock Location Details",
+            text = stringResource(R.string.add_mock_location_title),
             style = MaterialTheme.typography.titleLarge,
         )
 
@@ -46,7 +51,7 @@ fun AddMockLocationBottomSheet(
             onValueChange = { name = it },
             label = {
                 Text(
-                    text = "Name",
+                    text = stringResource(R.string.label_name),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             },
@@ -63,7 +68,7 @@ fun AddMockLocationBottomSheet(
             onValueChange = { latitude = it },
             label = {
                 Text(
-                    text = "Latitude",
+                    text = stringResource(R.string.label_latitude),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             },
@@ -81,7 +86,7 @@ fun AddMockLocationBottomSheet(
             onValueChange = { longitude = it },
             label = {
                 Text(
-                    text = "Longitude",
+                    text = stringResource(R.string.label_longitude),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             },
@@ -108,14 +113,15 @@ fun AddMockLocationBottomSheet(
                 val long = longitude.toDoubleOrNull()
 
                 if (lat == null || long == null || lat !in -90.0..90.0 || long !in -180.0..180.0) {
-                    error = "Invalid latitude or longitude"
+                    error = errorMessage
                     return@Button
                 }
 
                 error = null
+                val displayName = manualPrefixTemplate.format(name.ifBlank { "${lat}, ${long}" })
                 onSubmit(
                     MockLocation(
-                        name = "(Manual) $name",
+                        name = displayName,
                         lat = lat,
                         long = long,
                     )
@@ -124,7 +130,7 @@ fun AddMockLocationBottomSheet(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Set Mock Location",
+                text = stringResource(R.string.cta_set_mock_location),
                 style = MaterialTheme.typography.bodyLarge,
             )
         }

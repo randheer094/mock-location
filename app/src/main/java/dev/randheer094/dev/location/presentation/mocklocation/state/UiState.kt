@@ -10,7 +10,18 @@ data class MockLocationNStatus(
 ) : UiItem
 
 data class Location(val location: MockLocation) : UiItem
-data class SectionHeader(val text: String) : UiItem
+
+/**
+ * Identifies which section header to show. Actual strings are resolved in the Composable
+ * layer so UiStateMapper stays free of Android resource dependencies.
+ */
+sealed interface SectionHeader : UiItem {
+    /** Header above the currently selected mock location, includes on/off status. */
+    data class MockLocationStatus(val isOn: Boolean) : SectionHeader
+
+    /** Header above the list of preloaded locations. */
+    data object SelectLocations : SectionHeader
+}
 
 
 data class UiState(

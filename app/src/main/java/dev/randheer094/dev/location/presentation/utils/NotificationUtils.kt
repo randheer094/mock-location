@@ -14,21 +14,26 @@ class NotificationUtils(private val context: Context) {
     }
 
     fun createNotificationChannel() {
-        val name = "Mock Location Channel"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(CHANNEL_ID, name, importance)
+        val name = context.getString(R.string.notification_channel_name)
+        val description = context.getString(R.string.notification_channel_description)
+        val importance = NotificationManager.IMPORTANCE_LOW
+        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            this.description = description
+            setShowBadge(false)
+        }
 
         val notificationManager = context.getSystemService(NotificationManager::class.java)
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun createForegroundNotification(lat: Double, long: Double): Notification = NotificationCompat.Builder(context, CHANNEL_ID)
-        .setContentTitle("Mocking Location")
-        .setContentText("Latitude: $lat, Longitude: $long")
-        .setSmallIcon(R.drawable.ic_location)
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        .setOngoing(true)
-        .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-        .setSilent(true)
-        .build()
+    fun createForegroundNotification(lat: Double, long: Double): Notification =
+        NotificationCompat.Builder(context, CHANNEL_ID)
+            .setContentTitle(context.getString(R.string.notification_title))
+            .setContentText(context.getString(R.string.notification_content, lat.toString(), long.toString()))
+            .setSmallIcon(R.drawable.ic_location)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setOngoing(true)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .setSilent(true)
+            .build()
 }
