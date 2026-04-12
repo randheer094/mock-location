@@ -15,3 +15,8 @@
 local.properties
 .idea
 .kotlin
+
+# Release signing credentials (never commit!)
+keystore.properties
+*.jks
+*.keystore

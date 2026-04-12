@@ -14,6 +14,7 @@ import dev.randheer094.dev.location.domain.SetupInstructionStatusUseCase
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiState
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
 import dev.randheer094.dev.location.presentation.service.IMockLocationService
+import dev.randheer094.dev.location.presentation.service.MockLocationServiceStarter
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
 import dev.randheer094.dev.location.presentation.utils.PermissionUtils
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +37,7 @@ class MockLocationViewModel(
     private val uiStateMapper: UiStateMapper,
     private val locationUtils: LocationUtils,
     private val locationManager: LocationManager,
+    private val serviceStarter: MockLocationServiceStarter,
 ) : ViewModel() {
 
     companion object {
@@ -76,8 +78,12 @@ class MockLocationViewModel(
         }
     }
 
-    fun setMockLocationStatus(status: Boolean, location: MockLocation?, service: IMockLocationService?) {
-        if (status) {
+    /**
+     * Toggle mocking. [currentStatus] is the state BEFORE the tap: if mocking is currently
+     * on, we stop it; otherwise we start mocking with [location] (when non-null).
+     */
+    fun setMockLocationStatus(currentStatus: Boolean, location: MockLocation?, service: IMockLocationService?) {
+        if (currentStatus) {
             stopMockLocation(service)
         } else {
             location?.let { startMockLocation(it, service) }
@@ -94,6 +100,9 @@ class MockLocationViewModel(
             return@launch
         }
         service?.stopMocking()
+        // Tear down the started (foreground) service so it doesn't stay alive in the background
+        // after the user disables mocking.
+        serviceStarter.stop()
         setMockLocationStatusUseCase.execute(false)
     }
 
@@ -103,6 +112,12 @@ class MockLocationViewModel(
             return@launch
         }
 
+        // Promote the bound service to a started foreground service so it survives the UI
+        // leaving composition (navigation / process moves to background). Without this the
+        // mocking loop is cancelled as soon as MockLocationScreen unbinds. We also pass the
+        // location via the intent so the service can start the mocking loop even if the
+        // binder hasn't connected yet (race at first launch).
+        serviceStarter.start(location)
         service?.startMocking(location)
         setMockLocationStatusUseCase.execute(true)
     }

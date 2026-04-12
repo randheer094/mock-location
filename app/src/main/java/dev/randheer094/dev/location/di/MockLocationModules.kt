@@ -14,6 +14,7 @@ import dev.randheer094.dev.location.domain.SetSetupInstructionStatusUseCase
 import dev.randheer094.dev.location.domain.SetupInstructionStatusUseCase
 import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewModel
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
+import dev.randheer094.dev.location.presentation.service.MockLocationServiceStarter
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
 import dev.randheer094.dev.location.presentation.utils.NotificationUtils
 import dev.randheer094.dev.location.presentation.utils.PermissionUtils
@@ -49,7 +50,7 @@ val appModule = module {
 
     viewModel {
         MockLocationViewModel(
-            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
         )
     }
 
@@ -57,6 +58,7 @@ val appModule = module {
     single { LocationUtils() }
     single { NotificationUtils(get()) }
     single { PermissionUtils(get()) }
+    single { MockLocationServiceStarter(get()) }
     single {
         get<Context>().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Auto backup rules (legacy Key/Value + Auto Backup used up to Android 11).
+    We explicitly include the DataStore Preferences file that stores the user's selected
+    mock location and setup flags so the user doesn't lose them on re-install.
+-->
+<full-backup-content>
+    <include domain="file" path="datastore/m_l.preferences_pb" />
+</full-backup-content>

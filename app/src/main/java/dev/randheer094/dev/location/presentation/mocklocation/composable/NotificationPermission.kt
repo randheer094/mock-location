@@ -11,7 +11,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.randheer094.dev.location.R
 import dev.shreyaspatil.permissionFlow.utils.launch
 import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
 
@@ -26,15 +28,12 @@ fun NotificationPermission() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
-                text = "Notification Permission required",
+                text = stringResource(R.string.notification_permission_title),
                 style = MaterialTheme.typography.titleLarge,
             )
 
             Text(
-                text = """
-                    To ensure the mock location service runs reliably in the background, Android requires a foreground service notification.
-                    Please grant notification permission to display this essential status notification.
-                """.trimIndent(),
+                text = stringResource(R.string.notification_permission_body),
                 style = MaterialTheme.typography.bodyLarge,
             )
 
@@ -46,7 +45,7 @@ fun NotificationPermission() {
                 },
             ) {
                 Text(
-                    text = "Allow Notifications!",
+                    text = stringResource(R.string.notification_permission_cta),
                     style = MaterialTheme.typography.bodyLarge,
                 )
             }

@@ -1,3 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mock Location for Developers</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_name">Mock Location</string>
+    <string name="notification_channel_description">Ongoing notification while the app is mocking device location.</string>
+    <string name="notification_title">Mocking Location</string>
+    <string name="notification_content">Latitude: %1$s, Longitude: %2$s</string>
+
+    <!-- Setup instructions -->
+    <string name="setup_instructions_title">Setup Instructions</string>
+    <string name="setup_instructions_body">Select Mock Location App:\n- Go to Settings &gt; Developer options.\n- Scroll down and tap \"Select mock location app\".\n- Choose this app from the list.</string>
+    <string name="setup_instructions_got_it">Got it!</string>
+
+    <!-- Notification permission -->
+    <string name="notification_permission_title">Notification Permission required</string>
+    <string name="notification_permission_body">To ensure the mock location service runs reliably in the background, Android requires a foreground service notification. Please grant notification permission to display this essential status notification.</string>
+    <string name="notification_permission_cta">Allow Notifications!</string>
+
+    <!-- Main screen -->
+    <string name="section_mock_location_status">Mock location: (%1$s)</string>
+    <string name="status_on">ON</string>
+    <string name="status_off">OFF</string>
+    <string name="section_select_locations">Select locations</string>
+    <string name="add_or_select_location">Add Location or Select from list below</string>
+
+    <!-- Bottom sheet -->
+    <string name="add_mock_location_title">Add Mock Location Details</string>
+    <string name="label_name">Name</string>
+    <string name="label_latitude">Latitude</string>
+    <string name="label_longitude">Longitude</string>
+    <string name="error_invalid_lat_long">Invalid latitude or longitude</string>
+    <string name="cta_set_mock_location">Set Mock Location</string>
+    <string name="manual_location_prefix">(Manual) %1$s</string>
 </resources>

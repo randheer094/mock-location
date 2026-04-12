@@ -12,10 +12,10 @@ object UiStateMapper {
         hasNotificationPermission: Boolean,
     ): UiState {
         val items = buildList {
-            add(SectionHeader("Mock location: (${if (status) "ON" else "OFF"})"))
+            add(SectionHeader.MockLocationStatus(isOn = status))
             add(MockLocationNStatus(selected, status))
             if (locations.isNotEmpty()) {
-                add(SectionHeader("Select locations"))
+                add(SectionHeader.SelectLocations)
             }
             addAll(locations.map { Location(it) })
         }
