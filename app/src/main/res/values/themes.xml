@@ -2,14 +2,11 @@
 <resources>
     <!--
         Compose-only app: we don't use AppCompat/XML widgets so we anchor to the system
-        Material theme and let Compose draw everything. DayNight is provided by the -night
-        resource qualifier below, which flips the background to Material Dark.
+        Material theme and let Compose draw everything. Edge-to-edge and the status / nav bar
+        appearance are set from [MockLocationTheme] in code, so the XML theme only needs to
+        hide the action bar and expose a matching window background for the launch screen.
     -->
     <style name="Theme.MockLocation" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowBackground">@color/background</item>
     </style>
 </resources>

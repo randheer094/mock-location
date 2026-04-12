@@ -2,10 +2,17 @@ package dev.randheer094.dev.location.presentation.mocklocation.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -37,25 +44,29 @@ fun AddMockLocationBottomSheet(
 
     Column(
         modifier = modifier
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp),
+            .padding(horizontal = 24.dp)
+            .padding(bottom = 24.dp)
+            .navigationBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = stringResource(R.string.add_mock_location_title),
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+
+        Text(
+            text = stringResource(R.string.add_mock_location_subtitle),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = {
-                Text(
-                    text = stringResource(R.string.label_name),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            },
+            label = { Text(stringResource(R.string.label_name)) },
             singleLine = true,
+            shape = MaterialTheme.shapes.medium,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -65,47 +76,42 @@ fun AddMockLocationBottomSheet(
 
         OutlinedTextField(
             value = latitude,
-            onValueChange = { latitude = it },
-            label = {
-                Text(
-                    text = stringResource(R.string.label_latitude),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
+            onValueChange = {
+                latitude = it
+                if (error != null) error = null
             },
+            label = { Text(stringResource(R.string.label_latitude)) },
             singleLine = true,
+            shape = MaterialTheme.shapes.medium,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
             modifier = Modifier.fillMaxWidth(),
-            isError = error != null
+            isError = error != null,
+            supportingText = if (error != null) {
+                { Text(text = error!!) }
+            } else {
+                null
+            },
         )
 
         OutlinedTextField(
             value = longitude,
-            onValueChange = { longitude = it },
-            label = {
-                Text(
-                    text = stringResource(R.string.label_longitude),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
+            onValueChange = {
+                longitude = it
+                if (error != null) error = null
             },
+            label = { Text(stringResource(R.string.label_longitude)) },
             singleLine = true,
+            shape = MaterialTheme.shapes.medium,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done
             ),
             modifier = Modifier.fillMaxWidth(),
-            isError = error != null
+            isError = error != null,
         )
-
-        if (error != null) {
-            Text(
-                text = error!!,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
 
         Button(
             onClick = {
@@ -127,11 +133,18 @@ fun AddMockLocationBottomSheet(
                     )
                 )
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.large,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+            ),
         ) {
+            Icon(imageVector = Icons.Default.Check, contentDescription = null)
+            Spacer(Modifier.size(8.dp))
             Text(
                 text = stringResource(R.string.cta_set_mock_location),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.labelLarge,
             )
         }
     }

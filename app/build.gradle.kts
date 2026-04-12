@@ -115,4 +115,8 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.permission.flow.android)
     implementation(libs.permission.flow.compose)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlin.serialization.json)
 }

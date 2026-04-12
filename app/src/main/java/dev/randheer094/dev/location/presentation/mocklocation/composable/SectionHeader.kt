@@ -24,7 +24,8 @@ fun SectionHeader(
     }
     Text(
         text = text,
-        style = MaterialTheme.typography.titleLarge,
-        modifier = modifier.padding(16.dp),
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = modifier.padding(horizontal = 8.dp, vertical = 12.dp),
     )
 }
