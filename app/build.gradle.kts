@@ -3,7 +3,6 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -37,11 +36,12 @@ android {
         targetSdk = 36
         versionCode = 9
         versionName = "1.0.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         create("release") {
-            if (keystoreProperties.isNotEmpty) {
+            if (keystoreProperties.isNotEmpty()) {
                 storeFile = keystoreProperties.getProperty("storeFile")?.let(::file)
                 storePassword = keystoreProperties.getProperty("storePassword")
                 keyAlias = keystoreProperties.getProperty("keyAlias")
@@ -64,7 +64,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = if (keystoreProperties.isNotEmpty) {
+            signingConfig = if (keystoreProperties.isNotEmpty()) {
                 signingConfigs.getByName("release")
             } else {
                 // Fall back to the debug keystore so `assembleRelease` doesn't fail locally
@@ -108,6 +108,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.kotlin.serialization.json)
     implementation(libs.koin.core)
     implementation(libs.koin.android)
@@ -119,4 +120,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlin.serialization.json)
+
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
 }
