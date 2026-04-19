@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mock Location — Redesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #0A0E1A; font-family: 'Inter', system-ui, sans-serif; }
+  * { box-sizing: border-box; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="frames/android-frame.jsx"></script>
+<script type="text/babel" src="frames/design-canvas.jsx"></script>
+<script type="text/babel" src="components/theme.jsx"></script>
+<script type="text/babel" src="components/icons.jsx"></script>
+<script type="text/babel" src="components/map.jsx"></script>
+<script type="text/babel" src="components/home.jsx"></script>
+<script type="text/babel" src="components/screens.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useMemo } = React;
+
+const TWEAK_DEFAULS = /*EDITMODE-BEGIN*/{
+  "accentHue": 220,
+  "selectedCity": 1,
+  "density": "comfortable"
+}/*EDITMODE-END*/;
+
+function PhoneShell({ theme, children, label }) {
+  return (
+    <div style={{
+      width: 380, height: 800,
+      background: theme.bg,
+      borderRadius: 44,
+      overflow: 'hidden',
+      position: 'relative',
+      border: `10px solid ${theme.dark ? '#1a2033' : '#c9c3b4'}`,
+      boxShadow: theme.dark
+        ? '0 40px 100px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05)'
+        : '0 40px 100px -20px rgba(11,16,32,0.35), 0 0 0 1px rgba(11,16,32,0.05)',
+    }}>
+      {/* Status bar */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 42,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 24px', color: theme.text, fontSize: 13, fontWeight: 600,
+        fontFamily: 'Inter, system-ui, sans-serif', zIndex: 10,
+      }}>
+        <span style={{ fontFamily: 'JetBrains Mono, ui-monospace, monospace', fontSize: 12 }}>9:41</span>
+        <div style={{
+          position: 'absolute', left: '50%', top: 10, transform: 'translateX(-50%)',
+          width: 22, height: 22, borderRadius: '50%',
+          background: theme.dark ? '#000' : '#11131a',
+        }} />
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M7 9.5 0.7 3.2a9 9 0 0 1 12.6 0L7 9.5Z" fill={theme.text}/></svg>
+          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M12 9.5H2V1l10 8.5Z" fill={theme.text}/></svg>
+          <svg width="22" height="10" viewBox="0 0 22 10">
+            <rect x="0.5" y="1" width="18" height="8" rx="2" fill="none" stroke={theme.text} strokeOpacity="0.5" />
+            <rect x="2" y="2.5" width="14" height="5" rx="1" fill={theme.text} />
+            <rect x="19.5" y="3.5" width="1.5" height="3" rx="0.5" fill={theme.text} opacity="0.5" />
+          </svg>
+        </div>
+      </div>
+      {/* Content area, padded for status bar */}
+      <div style={{
+        position: 'absolute', top: 42, left: 0, right: 0, bottom: 0,
+        overflow: 'auto', overflowX: 'hidden',
+      }}>
+        {children}
+      </div>
+      {/* Gesture bar */}
+      <div style={{
+        position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
+        width: 120, height: 4, borderRadius: 4,
+        background: theme.text, opacity: 0.5, zIndex: 10,
+      }} />
+    </div>
+  );
+}
+
+function App() {
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULS);
+  const [editOpen, setEditOpen] = useState(false);
+
+  useEffect(() => {
+    const onMsg = (e) => {
+      if (!e.data) return;
+      if (e.data.type === '__activate_edit_mode') setEditOpen(true);
+      if (e.data.type === '__deactivate_edit_mode') setEditOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const update = (patch) => {
+    setTweaks((p) => ({ ...p, ...patch }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: patch }, '*');
+  };
+
+  const light = useMemo(() => buildTheme({ dark: false, accentHue: tweaks.accentHue }), [tweaks.accentHue]);
+  const dark  = useMemo(() => buildTheme({ dark: true,  accentHue: tweaks.accentHue }), [tweaks.accentHue]);
+  const selectedIndex = tweaks.selectedCity;
+
+  return (
+    <>
+      <DesignCanvas initialZoom={0.55}>
+        <DCSection id="home" title="Home — broadcasting live">
+          <DCArtboard id="home-on-dark" label="Dark · ON" width={400} height={820}>
+            <PhoneShell theme={dark}><HomeScreen theme={dark} state="on" selectedIndex={selectedIndex} /></PhoneShell>
+          </DCArtboard>
+          <DCArtboard id="home-on-light" label="Light · ON" width={400} height={820}>
+            <PhoneShell theme={light}><HomeScreen theme={light} state="on" selectedIndex={selectedIndex} /></PhoneShell>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="idle" title="Home — idle (ready to broadcast)">
+          <DCArtboard id="home-off-dark" label="Dark · OFF" width={400} height={820}>
+            <PhoneShell theme={dark}><HomeScreen theme={dark} state="off" selectedIndex={selectedIndex} /></PhoneShell>
+          </DCArtboard>
+          <DCArtboard id="home-off-light" label="Light · OFF" width={400} height={820}>
+            <PhoneShell theme={light}><HomeScreen theme={light} state="off" selectedIndex={selectedIndex} /></PhoneShell>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="sheet" title="Custom coordinates — bottom sheet">
+          <DCArtboard id="sheet-dark" label="Dark" width={400} height={820}>
+            <PhoneShell theme={dark}><CustomSheetScreen theme={dark} /></PhoneShell>
+          </DCArtboard>
+          <DCArtboard id="sheet-light" label="Light" width={400} height={820}>
+            <PhoneShell theme={light}><CustomSheetScreen theme={light} /></PhoneShell>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="setup" title="Setup instructions — first run">
+          <DCArtboard id="setup-dark" label="Dark" width={400} height={820}>
+            <PhoneShell theme={dark}><SetupScreen theme={dark} /></PhoneShell>
+          </DCArtboard>
+          <DCArtboard id="setup-light" label="Light" width={400} height={820}>
+            <PhoneShell theme={light}><SetupScreen theme={light} /></PhoneShell>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      {editOpen && <TweaksPanel tweaks={tweaks} update={update} />}
+    </>
+  );
+}
+
+function TweaksPanel({ tweaks, update }) {
+  const hues = [
+    { key: 188, label: 'Teal', dot: 'oklch(0.78 0.14 188)' },
+    { key: 220, label: 'Blue', dot: 'oklch(0.78 0.14 220)' },
+    { key: 150, label: 'Mint', dot: 'oklch(0.78 0.14 150)' },
+    { key: 50,  label: 'Amber', dot: 'oklch(0.78 0.14 50)' },
+    { key: 20,  label: 'Coral', dot: 'oklch(0.78 0.14 20)' },
+    { key: 300, label: 'Violet', dot: 'oklch(0.78 0.14 300)' },
+  ];
+  return (
+    <div style={{
+      position: 'fixed', right: 16, bottom: 16, width: 280, zIndex: 100,
+      background: '#111726', border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: 18, boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
+      color: '#EDF1F7', fontFamily: 'Inter, system-ui, sans-serif',
+      padding: 16,
+    }}>
+      <div style={{ fontSize: 11, letterSpacing: 1.6, textTransform: 'uppercase', color: '#9AA5BD', fontWeight: 700, marginBottom: 12 }}>
+        Tweaks
+      </div>
+      <div style={{ fontSize: 12, color: '#9AA5BD', marginBottom: 6 }}>Accent hue</div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
+        {hues.map(h => (
+          <button key={h.key} onClick={() => update({ accentHue: h.key })}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '6px 10px', borderRadius: 8, cursor: 'pointer',
+              background: tweaks.accentHue === h.key ? 'rgba(255,255,255,0.09)' : 'transparent',
+              border: `1px solid ${tweaks.accentHue === h.key ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)'}`,
+              color: '#EDF1F7', fontSize: 12,
+            }}>
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: h.dot }} />
+            {h.label}
+          </button>
+        ))}
+      </div>
+      <div style={{ fontSize: 12, color: '#9AA5BD', marginBottom: 6 }}>Selected city</div>
+      <select value={tweaks.selectedCity} onChange={(e) => update({ selectedCity: Number(e.target.value) })}
+        style={{
+          width: '100%', padding: '8px 10px', borderRadius: 8,
+          background: 'rgba(255,255,255,0.05)', color: '#EDF1F7',
+          border: '1px solid rgba(255,255,255,0.1)', fontSize: 13, fontFamily: 'inherit',
+        }}>
+        {window.LOCATIONS.map((l, i) => (
+          <option key={i} value={i}>{l.name}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
