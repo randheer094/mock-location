@@ -54,30 +54,29 @@ class MockLocationService : Service(), IMockLocationService {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> {
-                // We MUST call startForeground within ~5 seconds of startForegroundService,
-                // otherwise ForegroundServiceDidNotStartInTimeException is thrown. We always
-                // show a placeholder notification first, then let [startMocking] replace it
-                // with the real location-aware one.
                 val lat = intent.getDoubleExtra(EXTRA_LAT, Double.NaN)
                 val lng = intent.getDoubleExtra(EXTRA_LONG, Double.NaN)
                 val name = intent.getStringExtra(EXTRA_NAME) ?: ""
 
-                notificationUtils.createNotificationChannel()
-                startForeground(
-                    NotificationUtils.NOTIFICATION_ID,
-                    notificationUtils.createForegroundNotification(
-                        lat = lat.takeIf { !it.isNaN() } ?: 0.0,
-                        long = lng.takeIf { !it.isNaN() } ?: 0.0,
-                    ),
-                )
-
-                if (!lat.isNaN() && !lng.isNaN()) {
-                    startMocking(MockLocation(name = name, lat = lat, long = lng))
+                if (lat.isNaN() || lng.isNaN()) {
+                    // Without coordinates we can't mock. Promote to foreground briefly to
+                    // honour the 5-second startForegroundService contract, then stop so we
+                    // don't leave a phantom notification.
+                    notificationUtils.createNotificationChannel()
+                    startForeground(
+                        NotificationUtils.NOTIFICATION_ID,
+                        notificationUtils.createForegroundNotification(lat = 0.0, long = 0.0),
+                    )
+                    stopSelf()
+                    return START_NOT_STICKY
                 }
+
+                startMocking(MockLocation(name = name, lat = lat, long = lng))
             }
             ACTION_STOP -> {
                 stopMocking()
                 stopSelf()
+                return START_NOT_STICKY
             }
         }
         return START_STICKY
@@ -90,14 +89,9 @@ class MockLocationService : Service(), IMockLocationService {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        // Keep the service alive across task swipes so mocking continues after the user
-        // closes the activity. onTaskRemoved is only invoked if android:stopWithTask="false".
-        if (isMocking()) {
-            val intent = Intent(applicationContext, MockLocationService::class.java).apply {
-                action = rootIntent?.action
-            }
-            startService(intent)
-        }
+        // android:stopWithTask="false" already prevents teardown on swipe, and the active
+        // foreground notification + START_STICKY keep the service + mocking loop alive.
+        // No additional restart call is needed here.
         super.onTaskRemoved(rootIntent)
     }
 
