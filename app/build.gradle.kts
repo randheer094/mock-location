@@ -32,7 +32,7 @@ android {
 
     defaultConfig {
         applicationId = "dev.randheer094.dev.location"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 36
         versionCode = 9
         versionName = "1.0.0"

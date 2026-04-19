@@ -19,7 +19,7 @@ class GetMockLocationsUseCase(
             context.assets.open("m_l.json").bufferedReader().use { reader ->
                 json.decodeFromString<List<MockLocation>>(reader.readText())
             }
-        }.getOrElse { emptyList() }.also { cachedLocations = it }
+        }.getOrNull()?.also { cachedLocations = it } ?: emptyList()
         emit(locations)
     }.flowOn(Dispatchers.IO)
 }
