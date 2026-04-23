@@ -187,12 +187,15 @@ private fun HomeLayout(
                 onDismissRequest = { scope.launch { sheetState.hide() } },
                 containerColor = colors.bgElev,
             ) {
-                AddMockLocationBottomSheet { location ->
-                    scope.launch {
-                        viewModel.onManualLocation(location, service)
-                        sheetState.hide()
-                    }
-                }
+                AddMockLocationBottomSheet(
+                    onDismiss = { scope.launch { sheetState.hide() } },
+                    onSubmit = { location ->
+                        scope.launch {
+                            viewModel.onManualLocation(location, service)
+                            sheetState.hide()
+                        }
+                    },
+                )
             }
         }
         BackHandler(sheetState.isVisible) { scope.launch { sheetState.hide() } }

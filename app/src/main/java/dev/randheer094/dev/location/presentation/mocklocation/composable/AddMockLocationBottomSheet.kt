@@ -89,6 +89,7 @@ private fun closestCityName(lat: Double, lng: Double): String {
 @Composable
 fun AddMockLocationBottomSheet(
     modifier: Modifier = Modifier,
+    onDismiss: () -> Unit,
     onSubmit: (location: MockLocation) -> Unit,
 ) {
     val colors = LocalMockColors.current
@@ -154,12 +155,12 @@ fun AddMockLocationBottomSheet(
                 color = colors.text,
             )
             IconButton(
-                onClick = {},
+                onClick = onDismiss,
                 modifier = Modifier.size(32.dp),
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.cd_close_sheet),
                     tint = colors.textDim,
                     modifier = Modifier.size(20.dp),
                 )
@@ -395,7 +396,7 @@ fun AddMockLocationBottomSheet(
 @Composable
 private fun AddMockLocationBottomSheetPreviewLight() {
     MockLocationTheme {
-        AddMockLocationBottomSheet(onSubmit = {})
+        AddMockLocationBottomSheet(onDismiss = {}, onSubmit = {})
     }
 }
 
@@ -403,6 +404,6 @@ private fun AddMockLocationBottomSheetPreviewLight() {
 @Composable
 private fun AddMockLocationBottomSheetPreviewDark() {
     MockLocationTheme {
-        AddMockLocationBottomSheet(onSubmit = {})
+        AddMockLocationBottomSheet(onDismiss = {}, onSubmit = {})
     }
 }

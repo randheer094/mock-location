@@ -40,6 +40,7 @@
     <string name="cd_edit_location">Edit location</string>
     <string name="cd_start_mocking">Start mocking</string>
     <string name="cd_stop_mocking">Stop mocking</string>
+    <string name="cd_close_sheet">Close</string>
 
     <!-- Home screen -->
     <string name="wordmark_mock">mock</string>
