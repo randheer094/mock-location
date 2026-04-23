@@ -15,23 +15,34 @@ class SetupInstructionTest {
     val composeRule = createComposeRule()
 
     @Test
-    fun shows_title_body_and_dismiss_button() {
+    fun shows_all_three_step_card_titles() {
         composeRule.setContent {
             MockLocationTheme { SetupInstruction(onGotIt = {}) }
         }
 
-        composeRule.onNodeWithText("Setup Instructions").assertIsDisplayed()
-        composeRule.onNodeWithText("Got it!").assertIsDisplayed()
+        composeRule.onNodeWithText("Open Developer Options").assertIsDisplayed()
+        composeRule.onNodeWithText(“Find \”Select mock location app\””).assertIsDisplayed()
+        composeRule.onNodeWithText("Pick Mock Location").assertIsDisplayed()
     }
 
     @Test
-    fun got_it_click_invokes_callback_exactly_once() {
+    fun primary_cta_is_displayed_and_clickable() {
+        composeRule.setContent {
+            MockLocationTheme { SetupInstruction(onGotIt = {}) }
+        }
+
+        composeRule.onNodeWithText("Open developer options").assertIsDisplayed()
+        composeRule.onNodeWithText("Open developer options").performClick()
+    }
+
+    @Test
+    fun secondary_cta_triggers_on_got_it_callback() {
         var clicks = 0
         composeRule.setContent {
             MockLocationTheme { SetupInstruction(onGotIt = { clicks++ }) }
         }
 
-        composeRule.onNodeWithText("Got it!").performClick()
+        composeRule.onNodeWithText("I’ve done this — check again").performClick()
         assertEquals(1, clicks)
     }
 }
