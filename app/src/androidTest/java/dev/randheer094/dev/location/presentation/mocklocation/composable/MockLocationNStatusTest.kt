@@ -2,109 +2,106 @@ package dev.randheer094.dev.location.presentation.mocklocation.composable
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import dev.randheer094.dev.location.domain.MockLocation
-import dev.randheer094.dev.location.presentation.mocklocation.state.MockLocationNStatus
+import dev.randheer094.dev.location.presentation.mocklocation.state.UiState
 import dev.randheer094.dev.location.presentation.theme.MockLocationTheme
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
 /**
- * Covers the dual-layout rendering of [MockLocationNStatus]: a full card with edit and
- * start/stop affordances when a location is selected, and a single "Add or select" CTA when
- * no location has been picked yet.
+ * Covers BroadcastingHero and IdleHero rendering.
  */
 class MockLocationNStatusTest {
 
     @get:Rule
     val composeRule = createComposeRule()
 
-    private val paris = MockLocation(name = "Paris", lat = 48.8566, long = 2.3522)
+    private val paris = MockLocation(name = "Paris, France", lat = 48.8566, long = 2.3522)
 
     @Test
-    fun shows_play_affordance_when_mocking_is_off() {
+    fun broadcasting_hero_shows_live_status_pill() {
+        val state = UiState(
+            showInstructions = false,
+            status = true,
+            hasNotificationPermission = true,
+            items = emptyList(),
+            elapsedLabel = "00:05:30",
+            selected = paris,
+        )
         composeRule.setContent {
-            MockLocationTheme {
-                MockLocationNStatus(
-                    state = MockLocationNStatus(location = paris, status = false),
-                    onEdit = {},
-                    onStartStop = {},
-                )
-            }
+            MockLocationTheme { BroadcastingHero(uiState = state, onStop = {}) }
+        }
+
+        composeRule.onNodeWithText("LIVE · GPS + NET").assertIsDisplayed()
+    }
+
+    @Test
+    fun broadcasting_hero_shows_stop_button() {
+        val state = UiState(
+            showInstructions = false,
+            status = true,
+            hasNotificationPermission = true,
+            items = emptyList(),
+            elapsedLabel = "00:00:10",
+            selected = paris,
+        )
+        composeRule.setContent {
+            MockLocationTheme { BroadcastingHero(uiState = state, onStop = {}) }
+        }
+
+        composeRule.onNodeWithText("Stop broadcasting").assertIsDisplayed()
+    }
+
+    @Test
+    fun broadcasting_hero_shows_city_name_and_elapsed_timer() {
+        val state = UiState(
+            showInstructions = false,
+            status = true,
+            hasNotificationPermission = true,
+            items = emptyList(),
+            elapsedLabel = "00:02:15",
+            selected = paris,
+        )
+        composeRule.setContent {
+            MockLocationTheme { BroadcastingHero(uiState = state, onStop = {}) }
         }
 
         composeRule.onNodeWithText("Paris").assertIsDisplayed()
-        composeRule.onNodeWithContentDescription("Start mocking").assertIsDisplayed()
+        composeRule.onNodeWithText("T+ 00:02:15").assertIsDisplayed()
     }
 
     @Test
-    fun shows_stop_affordance_when_mocking_is_on() {
+    fun idle_hero_shows_off_status_pill() {
+        val state = UiState(
+            showInstructions = false,
+            status = false,
+            hasNotificationPermission = true,
+            items = emptyList(),
+            elapsedLabel = "",
+            selected = paris,
+        )
         composeRule.setContent {
-            MockLocationTheme {
-                MockLocationNStatus(
-                    state = MockLocationNStatus(location = paris, status = true),
-                    onEdit = {},
-                    onStartStop = {},
-                )
-            }
+            MockLocationTheme { IdleHero(uiState = state, onStart = {}) }
         }
 
-        composeRule.onNodeWithContentDescription("Stop mocking").assertIsDisplayed()
+        composeRule.onNodeWithText("Mock location off").assertIsDisplayed()
     }
 
     @Test
-    fun start_stop_button_invokes_callback() {
-        var clicked = 0
+    fun idle_hero_shows_ready_text() {
+        val state = UiState(
+            showInstructions = false,
+            status = false,
+            hasNotificationPermission = true,
+            items = emptyList(),
+            elapsedLabel = "",
+            selected = null,
+        )
         composeRule.setContent {
-            MockLocationTheme {
-                MockLocationNStatus(
-                    state = MockLocationNStatus(location = paris, status = false),
-                    onEdit = {},
-                    onStartStop = { clicked++ },
-                )
-            }
+            MockLocationTheme { IdleHero(uiState = state, onStart = {}) }
         }
 
-        composeRule.onNodeWithContentDescription("Start mocking").performClick()
-        assertEquals(1, clicked)
-    }
-
-    @Test
-    fun edit_button_invokes_callback() {
-        var edited = 0
-        composeRule.setContent {
-            MockLocationTheme {
-                MockLocationNStatus(
-                    state = MockLocationNStatus(location = paris, status = true),
-                    onEdit = { edited++ },
-                    onStartStop = {},
-                )
-            }
-        }
-
-        composeRule.onNodeWithContentDescription("Edit location").performClick()
-        assertEquals(1, edited)
-    }
-
-    @Test
-    fun null_location_renders_add_or_select_cta_which_triggers_edit() {
-        var edited = 0
-        composeRule.setContent {
-            MockLocationTheme {
-                MockLocationNStatus(
-                    state = MockLocationNStatus(location = null, status = false),
-                    onEdit = { edited++ },
-                    onStartStop = {},
-                )
-            }
-        }
-
-        composeRule.onNodeWithText("Add Location or Select from list below").assertIsDisplayed()
-        composeRule.onNodeWithText("Add Location or Select from list below").performClick()
-        assertTrue("Edit callback should fire when the placeholder CTA is tapped", edited == 1)
+        composeRule.onNodeWithText("Ready").assertIsDisplayed()
     }
 }
