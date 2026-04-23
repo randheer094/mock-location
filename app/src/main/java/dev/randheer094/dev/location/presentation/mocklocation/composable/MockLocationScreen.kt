@@ -160,7 +160,7 @@ private fun HomeLayout(
                 }
 
                 item {
-                    SectionHeader()
+                    SectionHeader(sortOrder = state.sortOrder, onToggleSort = viewModel::toggleSortOrder)
                 }
 
                 items(locations, key = { it.name }) { location ->

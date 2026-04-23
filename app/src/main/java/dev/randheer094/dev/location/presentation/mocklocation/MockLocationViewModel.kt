@@ -15,6 +15,7 @@ import dev.randheer094.dev.location.domain.SelectedMockLocationUseCase
 import dev.randheer094.dev.location.domain.SetMockLocationStatusUseCase
 import dev.randheer094.dev.location.domain.SetSetupInstructionStatusUseCase
 import dev.randheer094.dev.location.domain.SetupInstructionStatusUseCase
+import dev.randheer094.dev.location.presentation.mocklocation.state.SortOrder
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiState
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
 import dev.randheer094.dev.location.presentation.service.IMockLocationService
@@ -24,6 +25,7 @@ import dev.randheer094.dev.location.presentation.utils.PermissionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -54,6 +56,15 @@ class MockLocationViewModel(
         private const val STOP_TIMEOUT_MILLIS = 5_000L
     }
 
+    private val sortOrderFlow = MutableStateFlow(SortOrder.A_TO_Z)
+
+    fun toggleSortOrder() {
+        sortOrderFlow.value = when (sortOrderFlow.value) {
+            SortOrder.A_TO_Z -> SortOrder.Z_TO_A
+            SortOrder.Z_TO_A -> SortOrder.A_TO_Z
+        }
+    }
+
     private val elapsedLabelFlow: Flow<String> = dataStore.data
         .map { it[MOCK_STARTED_AT] ?: 0L }
         .flatMapLatest { startedAt ->
@@ -76,17 +87,21 @@ class MockLocationViewModel(
             mockLocationStatusUseCase.execute(),
             selectedMockLocationUseCase.execute(),
         ) { showInstructions, status, selected -> Triple(showInstructions, status, selected) },
-        getMockLocationsUseCase.execute(),
+        combine(
+            getMockLocationsUseCase.execute(),
+            sortOrderFlow,
+        ) { locations, sortOrder -> Pair(locations, sortOrder) },
         permissionUtils.getNotificationPermissionState(),
         elapsedLabelFlow,
-    ) { triple, locations, notiPermissionState, elapsedLabel ->
+    ) { triple, locationsWithSort, notiPermissionState, elapsedLabel ->
         uiStateMapper.mapToUiState(
             showInstructions = triple.first,
             status = triple.second,
             selected = triple.third,
-            locations = locations,
+            locations = locationsWithSort.first,
             hasNotificationPermission = notiPermissionState.isGranted,
             elapsedLabel = elapsedLabel,
+            sortOrder = locationsWithSort.second,
         )
     }.distinctUntilChanged().flowOn(Dispatchers.Default).stateIn(
         scope = viewModelScope,

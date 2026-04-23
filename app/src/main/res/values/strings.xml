@@ -51,6 +51,7 @@
     <string name="overline_currently_spoofing">CURRENTLY SPOOFING</string>
     <string name="section_preset_locations">PRESET LOCATIONS</string>
     <string name="label_sort_az">Sort · A–Z</string>
+    <string name="label_sort_za">Sort · Z–A</string>
     <string name="btn_stop_broadcasting">Stop broadcasting</string>
     <string name="badge_live">LIVE</string>
     <string name="overline_last_used">LAST USED</string>
