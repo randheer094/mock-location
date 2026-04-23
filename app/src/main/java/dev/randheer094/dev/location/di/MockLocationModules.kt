@@ -50,7 +50,7 @@ val appModule = module {
 
     viewModel {
         MockLocationViewModel(
-            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
         )
     }
 

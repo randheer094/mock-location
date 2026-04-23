@@ -1,6 +1,7 @@
 package dev.randheer094.dev.location.domain
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,3 +16,4 @@ data class MockLocation(
 val SELECTED_MOCK_LOCATION = stringPreferencesKey("m_l")
 val MOCK_LOCATION_STATUS = booleanPreferencesKey("m_l_e")
 val SETUP_INSTRUCTION_STATUS = booleanPreferencesKey("setup")
+val MOCK_STARTED_AT = longPreferencesKey("mock_started_at")

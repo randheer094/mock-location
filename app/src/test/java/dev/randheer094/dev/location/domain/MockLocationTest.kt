@@ -100,4 +100,9 @@ class MockLocationTest {
 
         assertEquals(original, roundTripped)
     }
+
+    @Test
+    fun `MOCK_STARTED_AT preference key has the expected name`() {
+        assertEquals("mock_started_at", MOCK_STARTED_AT.name)
+    }
 }

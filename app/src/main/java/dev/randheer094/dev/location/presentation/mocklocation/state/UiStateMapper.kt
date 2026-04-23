@@ -10,6 +10,7 @@ object UiStateMapper {
         selected: MockLocation?,
         locations: List<MockLocation>,
         hasNotificationPermission: Boolean,
+        elapsedLabel: String,
     ): UiState {
         val items = buildList {
             add(SectionHeader.MockLocationStatus(isOn = status))
@@ -25,6 +26,32 @@ object UiStateMapper {
             status = status,
             hasNotificationPermission = hasNotificationPermission,
             items = items,
+            elapsedLabel = elapsedLabel,
+            selected = selected,
         )
     }
+
+    fun getCountryCode(locationName: String): String {
+        val country = locationName.substringAfter(',').trim()
+        return countryCodeMap[country] ?: "??"
+    }
+
+    private val countryCodeMap = mapOf(
+        "Singapore" to "SG",
+        "Sweden" to "SE",
+        "Türkiye" to "TR",
+        "Hong Kong" to "HK",
+        "Malaysia" to "MY",
+        "Norway" to "NO",
+        "Bangladesh" to "BD",
+        "Pakistan" to "PK",
+        "Philippines" to "PH",
+        "Taiwan" to "TW",
+        "Cambodia" to "KH",
+        "Laos" to "LA",
+        "Myanmar" to "MM",
+        "Czechia" to "CZ",
+        "Hungary" to "HU",
+        "Austria" to "AT",
+    )
 }

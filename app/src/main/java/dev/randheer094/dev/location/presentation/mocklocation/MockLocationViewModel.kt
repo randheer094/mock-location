@@ -1,9 +1,13 @@
 package dev.randheer094.dev.location.presentation.mocklocation
 
 import android.location.LocationManager
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.randheer094.dev.location.domain.GetMockLocationsUseCase
+import dev.randheer094.dev.location.domain.MOCK_STARTED_AT
 import dev.randheer094.dev.location.domain.MockLocation
 import dev.randheer094.dev.location.domain.MockLocationStatusUseCase
 import dev.randheer094.dev.location.domain.SelectMockLocationUseCase
@@ -18,10 +22,15 @@ import dev.randheer094.dev.location.presentation.service.MockLocationServiceStar
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
 import dev.randheer094.dev.location.presentation.utils.PermissionUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -38,25 +47,46 @@ class MockLocationViewModel(
     private val locationUtils: LocationUtils,
     private val locationManager: LocationManager,
     private val serviceStarter: MockLocationServiceStarter,
+    private val dataStore: DataStore<Preferences>,
 ) : ViewModel() {
 
     companion object {
         private const val STOP_TIMEOUT_MILLIS = 5_000L
     }
 
+    private val elapsedLabelFlow: Flow<String> = dataStore.data
+        .map { it[MOCK_STARTED_AT] ?: 0L }
+        .flatMapLatest { startedAt ->
+            if (startedAt == 0L) {
+                flow { emit("") }
+            } else {
+                flow {
+                    while (true) {
+                        val elapsed = System.currentTimeMillis() - startedAt
+                        emit(formatElapsed(elapsed))
+                        delay(1000)
+                    }
+                }
+            }
+        }
+
     val state = combine(
-        setupInstructionStatusUseCase.execute(),
-        mockLocationStatusUseCase.execute(),
-        selectedMockLocationUseCase.execute(),
+        combine(
+            setupInstructionStatusUseCase.execute(),
+            mockLocationStatusUseCase.execute(),
+            selectedMockLocationUseCase.execute(),
+        ) { showInstructions, status, selected -> Triple(showInstructions, status, selected) },
         getMockLocationsUseCase.execute(),
         permissionUtils.getNotificationPermissionState(),
-    ) { showInstructions, status, selected, locations, notiPermissionState ->
+        elapsedLabelFlow,
+    ) { triple, locations, notiPermissionState, elapsedLabel ->
         uiStateMapper.mapToUiState(
-            showInstructions = showInstructions,
-            status = status,
-            selected = selected,
+            showInstructions = triple.first,
+            status = triple.second,
+            selected = triple.third,
             locations = locations,
             hasNotificationPermission = notiPermissionState.isGranted,
+            elapsedLabel = elapsedLabel,
         )
     }.distinctUntilChanged().flowOn(Dispatchers.Default).stateIn(
         scope = viewModelScope,
@@ -104,6 +134,7 @@ class MockLocationViewModel(
         // after the user disables mocking.
         serviceStarter.stop()
         setMockLocationStatusUseCase.execute(false)
+        dataStore.edit { it[MOCK_STARTED_AT] = 0L }
     }
 
     private fun startMockLocation(location: MockLocation, service: IMockLocationService?) = viewModelScope.launch(Dispatchers.Default) {
@@ -120,5 +151,14 @@ class MockLocationViewModel(
         serviceStarter.start(location)
         service?.startMocking(location)
         setMockLocationStatusUseCase.execute(true)
+        dataStore.edit { it[MOCK_STARTED_AT] = System.currentTimeMillis() }
+    }
+
+    private fun formatElapsed(millis: Long): String {
+        val totalSeconds = millis / 1000
+        val hours = totalSeconds / 3600
+        val minutes = (totalSeconds % 3600) / 60
+        val seconds = totalSeconds % 60
+        return "%02d:%02d:%02d".format(hours, minutes, seconds)
     }
 }
