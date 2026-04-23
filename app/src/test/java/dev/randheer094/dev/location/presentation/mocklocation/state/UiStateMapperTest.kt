@@ -27,6 +27,7 @@ class UiStateMapperTest {
             selected = null,
             locations = emptyList(),
             hasNotificationPermission = true,
+            elapsedLabel = "",
         )
 
         assertFalse(state.showInstructions)
@@ -47,6 +48,7 @@ class UiStateMapperTest {
             selected = null,
             locations = emptyList(),
             hasNotificationPermission = true,
+            elapsedLabel = "",
         )
 
         val header = state.items.first() as SectionHeader.MockLocationStatus
@@ -62,6 +64,7 @@ class UiStateMapperTest {
             selected = null,
             locations = emptyList(),
             hasNotificationPermission = true,
+            elapsedLabel = "",
         )
 
         val header = state.items.first() as SectionHeader.MockLocationStatus
@@ -77,6 +80,7 @@ class UiStateMapperTest {
             selected = london,
             locations = emptyList(),
             hasNotificationPermission = true,
+            elapsedLabel = "",
         )
 
         val selectedRow = state.items[1] as MockLocationNStatus
@@ -92,6 +96,7 @@ class UiStateMapperTest {
             selected = null,
             locations = emptyList(),
             hasNotificationPermission = false,
+            elapsedLabel = "",
         )
 
         val selectedRow = state.items[1] as MockLocationNStatus
@@ -107,6 +112,7 @@ class UiStateMapperTest {
             selected = null,
             locations = listOf(london, newYork),
             hasNotificationPermission = true,
+            elapsedLabel = "",
         )
 
         // [status header, MockLocationNStatus, SelectLocations, Location(london), Location(newYork)]
@@ -122,6 +128,7 @@ class UiStateMapperTest {
             selected = london,
             locations = emptyList(),
             hasNotificationPermission = true,
+            elapsedLabel = "",
         )
 
         assertFalse(state.items.any { it === SectionHeader.SelectLocations })
@@ -137,6 +144,7 @@ class UiStateMapperTest {
             selected = null,
             locations = ordered,
             hasNotificationPermission = true,
+            elapsedLabel = "",
         )
 
         val locationItems = state.items.filterIsInstance<Location>().map { it.location }
@@ -151,6 +159,7 @@ class UiStateMapperTest {
             selected = null,
             locations = emptyList(),
             hasNotificationPermission = true,
+            elapsedLabel = "",
         )
 
         assertTrue(state.showInstructions)
@@ -164,6 +173,7 @@ class UiStateMapperTest {
             selected = null,
             locations = emptyList(),
             hasNotificationPermission = false,
+            elapsedLabel = "",
         )
 
         assertFalse(state.hasNotificationPermission)
@@ -177,6 +187,7 @@ class UiStateMapperTest {
             selected = london,
             locations = listOf(newYork, tokyo),
             hasNotificationPermission = true,
+            elapsedLabel = "",
         )
 
         val items = state.items
@@ -198,5 +209,88 @@ class UiStateMapperTest {
         assertFalse(empty.status)
         assertFalse(empty.hasNotificationPermission)
         assertTrue(empty.items.isEmpty())
+    }
+
+    @Test
+    fun `elapsedLabel is passed through to UiState`() {
+        val state = UiStateMapper.mapToUiState(
+            showInstructions = false,
+            status = true,
+            selected = null,
+            locations = emptyList(),
+            hasNotificationPermission = true,
+            elapsedLabel = "01:23:45",
+        )
+
+        assertEquals("01:23:45", state.elapsedLabel)
+    }
+
+    @Test
+    fun `empty elapsedLabel is passed through to UiState`() {
+        val state = UiStateMapper.mapToUiState(
+            showInstructions = false,
+            status = false,
+            selected = null,
+            locations = emptyList(),
+            hasNotificationPermission = true,
+            elapsedLabel = "",
+        )
+
+        assertEquals("", state.elapsedLabel)
+    }
+
+    @Test
+    fun `selected is passed through to UiState`() {
+        val state = UiStateMapper.mapToUiState(
+            showInstructions = false,
+            status = true,
+            selected = london,
+            locations = emptyList(),
+            hasNotificationPermission = true,
+            elapsedLabel = "",
+        )
+
+        assertEquals(london, state.selected)
+    }
+
+    @Test
+    fun `null selected is passed through to UiState`() {
+        val state = UiStateMapper.mapToUiState(
+            showInstructions = false,
+            status = false,
+            selected = null,
+            locations = emptyList(),
+            hasNotificationPermission = true,
+            elapsedLabel = "",
+        )
+
+        assertNull(state.selected)
+    }
+
+    @Test
+    fun `getCountryCode returns correct code for known countries`() {
+        assertEquals("SG", UiStateMapper.getCountryCode("Singapore, Singapore"))
+        assertEquals("SE", UiStateMapper.getCountryCode("Stockholm, Sweden"))
+        assertEquals("TR", UiStateMapper.getCountryCode("Istanbul, Türkiye"))
+        assertEquals("HK", UiStateMapper.getCountryCode("Kowloon, Hong Kong"))
+        assertEquals("MY", UiStateMapper.getCountryCode("Kuala Lumpur, Malaysia"))
+        assertEquals("NO", UiStateMapper.getCountryCode("Oslo, Norway"))
+        assertEquals("BD", UiStateMapper.getCountryCode("Dhaka, Bangladesh"))
+        assertEquals("PK", UiStateMapper.getCountryCode("Karachi, Pakistan"))
+        assertEquals("PH", UiStateMapper.getCountryCode("Manila, Philippines"))
+        assertEquals("TW", UiStateMapper.getCountryCode("Taipei, Taiwan"))
+        assertEquals("KH", UiStateMapper.getCountryCode("Phnom Penh, Cambodia"))
+        assertEquals("LA", UiStateMapper.getCountryCode("Vientiane, Laos"))
+        assertEquals("MM", UiStateMapper.getCountryCode("Yangon, Myanmar"))
+        assertEquals("CZ", UiStateMapper.getCountryCode("Prague, Czechia"))
+        assertEquals("HU", UiStateMapper.getCountryCode("Budapest, Hungary"))
+        assertEquals("AT", UiStateMapper.getCountryCode("Vienna, Austria"))
+    }
+
+    @Test
+    fun `getCountryCode returns fallback code for unknown country`() {
+        assertEquals("??", UiStateMapper.getCountryCode("Paris, France"))
+        assertEquals("??", UiStateMapper.getCountryCode("London, UK"))
+        assertEquals("??", UiStateMapper.getCountryCode("NoCommaHere"))
     }
 }

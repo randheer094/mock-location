@@ -29,6 +29,8 @@ data class UiState(
     val status: Boolean,
     val hasNotificationPermission: Boolean,
     val items: List<UiItem>,
+    val elapsedLabel: String = "",
+    val selected: MockLocation? = null,
 ) {
     companion object {
         val Empty = UiState(
@@ -36,6 +38,8 @@ data class UiState(
             status = false,
             hasNotificationPermission = false,
             items = emptyList(),
+            elapsedLabel = "",
+            selected = null,
         )
     }
 }
