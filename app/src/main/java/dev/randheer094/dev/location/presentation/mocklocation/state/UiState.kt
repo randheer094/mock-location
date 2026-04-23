@@ -31,6 +31,7 @@ data class UiState(
     val items: List<UiItem>,
     val elapsedLabel: String = "",
     val selected: MockLocation? = null,
+    val sortOrder: SortOrder = SortOrder.A_TO_Z,
 ) {
     companion object {
         val Empty = UiState(
@@ -40,6 +41,7 @@ data class UiState(
             items = emptyList(),
             elapsedLabel = "",
             selected = null,
+            sortOrder = SortOrder.A_TO_Z,
         )
     }
 }
