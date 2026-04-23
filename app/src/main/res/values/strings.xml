@@ -40,4 +40,51 @@
     <string name="cd_edit_location">Edit location</string>
     <string name="cd_start_mocking">Start mocking</string>
     <string name="cd_stop_mocking">Stop mocking</string>
+
+    <!-- Home screen -->
+    <string name="wordmark_mock">mock</string>
+    <string name="wordmark_location">location</string>
+    <string name="status_live">LIVE · GPS + NET</string>
+    <string name="status_mock_off">Mock location off</string>
+    <string name="status_ready">Ready</string>
+    <string name="overline_currently_spoofing">CURRENTLY SPOOFING</string>
+    <string name="section_preset_locations">PRESET LOCATIONS</string>
+    <string name="label_sort_az">Sort · A–Z</string>
+    <string name="btn_stop_broadcasting">Stop broadcasting</string>
+    <string name="badge_live">LIVE</string>
+    <string name="overline_last_used">LAST USED</string>
+    <string name="btn_start">Start</string>
+    <string name="timer_format">T+ %1$s</string>
+
+    <!-- Bottom sheet -->
+    <string name="sheet_title_custom_location">Custom location</string>
+    <string name="sheet_subtitle">Enter a label and coordinates. Saved to your library.</string>
+    <string name="overline_name">NAME</string>
+    <string name="helper_name">A friendly label for your library.</string>
+    <string name="overline_latitude">LATITUDE</string>
+    <string name="overline_longitude">LONGITUDE</string>
+    <string name="helper_latitude">−90 to 90</string>
+    <string name="helper_longitude">−180 to 180</string>
+    <string name="validation_valid">Valid coordinates · Closest city: %1$s</string>
+    <string name="validation_lat_out_of_range">Latitude out of range</string>
+    <string name="validation_lng_out_of_range">Longitude out of range</string>
+    <string name="btn_set_mock_location_new">Set mock location</string>
+    <string name="tip_paste">Tip: paste 37.7749, −122.4194 into any field</string>
+    <string name="snackbar_added">Added \"%1$s\" to your library</string>
+
+    <!-- Setup screen -->
+    <string name="setup_step_label">Setup · step %1$d of %2$d</string>
+    <string name="overline_one_time_setup">ONE-TIME SETUP</string>
+    <string name="setup_headline_line1">Let Android know</string>
+    <string name="setup_headline_line2">we’re the boss of GPS.</string>
+    <string name="setup_supporting_text">Android requires you to manually authorize a mock-location provider. Takes about 20 seconds.</string>
+    <string name="step1_title">Open Developer Options</string>
+    <string name="step1_body">On your device, go to Settings → System → Developer options.</string>
+    <string name="step1_code">adb shell am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS</string>
+    <string name="step2_title">Find \"Select mock location app\"</string>
+    <string name="step2_body">Scroll to the Debugging section. Tap the row.</string>
+    <string name="step3_title">Pick Mock Location</string>
+    <string name="step3_body">Select this app from the list. You’ll see it appear in your debug surface.</string>
+    <string name="btn_open_dev_options">Open developer options</string>
+    <string name="btn_check_again">I’ve done this — check again</string>
 </resources>
