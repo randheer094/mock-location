@@ -11,14 +11,19 @@ object UiStateMapper {
         locations: List<MockLocation>,
         hasNotificationPermission: Boolean,
         elapsedLabel: String,
+        sortOrder: SortOrder = SortOrder.A_TO_Z,
     ): UiState {
+        val sortedLocations = when (sortOrder) {
+            SortOrder.A_TO_Z -> locations.sortedBy { it.name }
+            SortOrder.Z_TO_A -> locations.sortedByDescending { it.name }
+        }
         val items = buildList {
             add(SectionHeader.MockLocationStatus(isOn = status))
             add(MockLocationNStatus(selected, status))
-            if (locations.isNotEmpty()) {
+            if (sortedLocations.isNotEmpty()) {
                 add(SectionHeader.SelectLocations)
             }
-            addAll(locations.map { Location(it) })
+            addAll(sortedLocations.map { Location(it) })
         }
 
         return UiState(
@@ -28,6 +33,7 @@ object UiStateMapper {
             items = items,
             elapsedLabel = elapsedLabel,
             selected = selected,
+            sortOrder = sortOrder,
         )
     }
 
