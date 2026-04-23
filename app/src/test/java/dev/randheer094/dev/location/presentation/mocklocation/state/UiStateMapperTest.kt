@@ -293,4 +293,61 @@ class UiStateMapperTest {
         assertEquals("??", UiStateMapper.getCountryCode("London, UK"))
         assertEquals("??", UiStateMapper.getCountryCode("NoCommaHere"))
     }
+
+    @Test
+    fun `A_TO_Z sort order produces locations sorted alphabetically ascending`() {
+        val state = UiStateMapper.mapToUiState(
+            showInstructions = false,
+            status = false,
+            selected = null,
+            locations = listOf(tokyo, london, newYork),
+            hasNotificationPermission = true,
+            elapsedLabel = "",
+            sortOrder = SortOrder.A_TO_Z,
+        )
+
+        val locationItems = state.items.filterIsInstance<Location>().map { it.location }
+        assertEquals(listOf(london, newYork, tokyo), locationItems)
+    }
+
+    @Test
+    fun `Z_TO_A sort order produces locations sorted reverse-alphabetically descending`() {
+        val state = UiStateMapper.mapToUiState(
+            showInstructions = false,
+            status = false,
+            selected = null,
+            locations = listOf(tokyo, london, newYork),
+            hasNotificationPermission = true,
+            elapsedLabel = "",
+            sortOrder = SortOrder.Z_TO_A,
+        )
+
+        val locationItems = state.items.filterIsInstance<Location>().map { it.location }
+        assertEquals(listOf(tokyo, newYork, london), locationItems)
+    }
+
+    @Test
+    fun `sortOrder is reflected in UiState`() {
+        val stateAtoZ = UiStateMapper.mapToUiState(
+            showInstructions = false,
+            status = false,
+            selected = null,
+            locations = emptyList(),
+            hasNotificationPermission = true,
+            elapsedLabel = "",
+            sortOrder = SortOrder.A_TO_Z,
+        )
+        val stateZtoA = UiStateMapper.mapToUiState(
+            showInstructions = false,
+            status = false,
+            selected = null,
+            locations = emptyList(),
+            hasNotificationPermission = true,
+            elapsedLabel = "",
+            sortOrder = SortOrder.Z_TO_A,
+        )
+
+        assertEquals(SortOrder.A_TO_Z, stateAtoZ.sortOrder)
+        assertEquals(SortOrder.Z_TO_A, stateZtoA.sortOrder)
+    }
 }
