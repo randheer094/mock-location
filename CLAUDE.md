@@ -4,8 +4,9 @@ This file primes Claude Code with the information it needs to be productive in t
 Update it as conventions or infrastructure change. The README is for humans; this file is
 for the assistant.
 
-**Binding rules**: see [.claude/rules.md](.claude/rules.md). Treat those as authoritative —
-this file is background, that file is policy.
+**Binding rules**: see [.claude/CLAUDE.md](.claude/CLAUDE.md) and the topic files it
+links to under `.claude/rules/`. Treat those as authoritative — this file is background,
+those are policy.
 
 ## What this app is
 
