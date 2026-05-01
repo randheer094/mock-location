@@ -1,12 +1,12 @@
 export const Strings = {
   setupScreen: {
     headlineLine1: 'Let Android know',
-    headlineLine2: 'we\'re the boss of GPS.',
+    headlineLine2: 'we’re the boss of GPS.',
     step1Title: 'Open Developer Options',
     step2Title: 'Find "Select mock location app"',
     step3Title: 'Pick Mock Location',
     openDevOptionsCta: 'Open developer options',
-    checkAgainCta: 'I\'ve done this — check again',
+    checkAgainCta: 'I’ve done this — check again',
   },
   home: {
     wordmarkMock: 'mock',
