@@ -1,6 +1,7 @@
 package dev.randheer094.dev.location.presentation.mocklocation.state
 
 import dev.randheer094.dev.location.domain.MockLocation
+import kotlinx.collections.immutable.toImmutableList
 
 object UiStateMapper {
 
@@ -24,7 +25,7 @@ object UiStateMapper {
                 add(SectionHeader.SelectLocations)
             }
             addAll(sortedLocations.map { Location(it) })
-        }
+        }.toImmutableList()
 
         return UiState(
             showInstructions = showInstructions,

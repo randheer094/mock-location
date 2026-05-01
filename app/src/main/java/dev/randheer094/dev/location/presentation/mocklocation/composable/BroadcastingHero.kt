@@ -34,6 +34,7 @@ import dev.randheer094.dev.location.presentation.theme.JetBrainsMonoFamily
 import dev.randheer094.dev.location.presentation.theme.LocalMockColors
 import dev.randheer094.dev.location.presentation.theme.MockLocationTheme
 import kotlin.math.abs
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BroadcastingHero(
@@ -174,7 +175,7 @@ private fun BroadcastingHeroLightPreview() {
                 showInstructions = false,
                 status = true,
                 hasNotificationPermission = true,
-                items = emptyList(),
+                items = persistentListOf(),
                 elapsedLabel = "00:05:30",
                 selected = MockLocation(name = "Singapore, Singapore", lat = 1.3521, long = 103.8198),
             ),
@@ -192,7 +193,7 @@ private fun BroadcastingHeroDarkPreview() {
                 showInstructions = false,
                 status = true,
                 hasNotificationPermission = true,
-                items = emptyList(),
+                items = persistentListOf(),
                 elapsedLabel = "01:22:05",
                 selected = MockLocation(name = "Singapore, Singapore", lat = 1.3521, long = 103.8198),
             ),

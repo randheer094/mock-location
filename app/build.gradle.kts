@@ -129,6 +129,8 @@ dependencies {
     implementation(libs.permission.flow.android)
     implementation(libs.permission.flow.compose)
     implementation(libs.timber)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.collections.immutable)
     debugImplementation(libs.leakcanary.android)
 
     testImplementation(libs.junit)

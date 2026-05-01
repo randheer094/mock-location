@@ -1,6 +1,8 @@
 package dev.randheer094.dev.location.presentation.mocklocation.state
 
 import dev.randheer094.dev.location.domain.MockLocation
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 sealed interface UiItem
 
@@ -28,7 +30,7 @@ data class UiState(
     val showInstructions: Boolean,
     val status: Boolean,
     val hasNotificationPermission: Boolean,
-    val items: List<UiItem>,
+    val items: ImmutableList<UiItem>,
     val elapsedLabel: String = "",
     val selected: MockLocation? = null,
     val sortOrder: SortOrder = SortOrder.A_TO_Z,
@@ -38,7 +40,7 @@ data class UiState(
             showInstructions = false,
             status = false,
             hasNotificationPermission = false,
-            items = emptyList(),
+            items = persistentListOf(),
             elapsedLabel = "",
             selected = null,
             sortOrder = SortOrder.A_TO_Z,
