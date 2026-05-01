@@ -19,6 +19,8 @@ androidxTestCore = "1.6.1"
 espresso = "3.6.1"
 androidxArchCoreTesting = "2.2.0"
 androidxUiAutomator = "2.3.0"
+timber = "5.0.1"
+leakcanary = "2.14"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -52,6 +54,8 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 koin-android-test = { group = "io.insert-koin", name = "koin-android-test", version.ref = "koin" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

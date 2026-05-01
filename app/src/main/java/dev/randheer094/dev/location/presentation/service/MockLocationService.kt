@@ -5,7 +5,6 @@ import android.content.Intent
 import android.location.LocationManager
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import dev.randheer094.dev.location.domain.MockLocation
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
 import dev.randheer094.dev.location.presentation.utils.NotificationUtils
@@ -18,6 +17,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 interface IMockLocationService {
     fun startMocking(location: MockLocation)
@@ -34,7 +34,6 @@ class MockLocationService : Service(), IMockLocationService {
     private var job: Job? = null
 
     companion object {
-        private const val TAG = "MockLocationService"
         private const val MOCK_LOCATION_UPDATE_INTERVAL_MS = 1000L
         const val ACTION_START = "dev.randheer094.dev.location.action.START"
         const val ACTION_STOP = "dev.randheer094.dev.location.action.STOP"
@@ -134,7 +133,7 @@ class MockLocationService : Service(), IMockLocationService {
                     // SecurityException can be thrown if the user removes this app as the
                     // mock location provider while we're running. Log and exit the loop so
                     // the service can be cleanly stopped by the UI/ViewModel.
-                    Log.w(TAG, "Failed to push mock location, stopping loop", it)
+                    Timber.w(it, "Failed to push mock location, stopping loop")
                     return@launch
                 }
                 delay(MOCK_LOCATION_UPDATE_INTERVAL_MS)

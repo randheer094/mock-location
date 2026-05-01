@@ -34,8 +34,8 @@ android {
         applicationId = "dev.randheer094.dev.location"
         minSdk = 28
         targetSdk = 36
-        versionCode = 10
-        versionName = "1.0.0"
+        versionCode = 10 // intentional: first public upload
+        versionName = "1.0.0" // intentional: first public upload
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -66,15 +66,23 @@ android {
             )
             signingConfig = if (keystoreProperties.isNotEmpty()) {
                 signingConfigs.getByName("release")
+            } else if (System.getenv("CI") != null) {
+                error("Release signing requires keystore.properties on CI")
             } else {
                 // Fall back to the debug keystore so `assembleRelease` doesn't fail locally
-                // when keystore.properties is absent. CI must always provide real credentials.
+                // when keystore.properties is absent.
                 signingConfigs.getByName("debug")
             }
         }
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+    lint {
+        abortOnError = true
+        warningsAsErrors = true
+        baseline = file("lint-baseline.xml")
     }
     testOptions {
         animationsDisabled = true
@@ -86,6 +94,7 @@ android {
     kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+            allWarningsAsErrors.set(true)
         }
     }
     packaging {
@@ -119,6 +128,8 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.permission.flow.android)
     implementation(libs.permission.flow.compose)
+    implementation(libs.timber)
+    debugImplementation(libs.leakcanary.android)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

@@ -34,8 +34,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class MockLocationViewModel(
     getMockLocationsUseCase: GetMockLocationsUseCase,
     selectedMockLocationUseCase: SelectedMockLocationUseCase,
