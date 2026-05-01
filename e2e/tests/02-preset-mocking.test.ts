@@ -6,9 +6,13 @@ import {
   isForegroundServiceRunning,
   lastMockedLocation,
 } from '../fixtures/adb';
-import { startMockingDefaultCity } from '../fixtures/home';
+import { goToHome, startMockingDefaultCity } from '../fixtures/home';
 
 test.describe('preset mocking', () => {
+  test.beforeEach(async ({ device }) => {
+    await goToHome(device);
+  });
+
   test('tap preset transitions home to mocking-active state', async ({ device }) => {
     const { screen } = device;
     await startMockingDefaultCity(device);

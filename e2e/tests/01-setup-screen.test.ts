@@ -6,7 +6,9 @@ import { PKG } from '../fixtures/constants';
 
 test.describe('setup screen', () => {
   test.beforeEach(async ({ device }) => {
-    // Revert globalSetup's appops grant so the app shows the setup wizard.
+    // The fixture has already pm-cleared the app, granted POST_NOTIFICATIONS,
+    // and granted mock-app via appops. Revert the appops grant so the wizard
+    // is visible, then bounce the activity to pick up the change.
     await resetMockApp(device);
     await device.terminateApp(PKG);
     await device.launchApp(PKG);

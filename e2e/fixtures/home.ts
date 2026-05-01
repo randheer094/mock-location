@@ -4,6 +4,19 @@ import { DEFAULT_CITY } from './constants';
 
 const DEFAULT_CITY_LABEL = DEFAULT_CITY.name.split(',')[0].trim();
 
+/**
+ * Dismiss the one-time setup wizard if it is on screen, leaving the home
+ * screen visible. No-op when the wizard is already dismissed (e.g. when
+ * called more than once in the same session).
+ */
+export async function goToHome(device: Device): Promise<void> {
+  const { screen } = device;
+  const cta = screen.getByText(Strings.setupScreen.checkAgainCta);
+  if (await cta.isVisible({ timeout: 5_000 }).catch(() => false)) {
+    await cta.tap();
+  }
+}
+
 export async function scrollToTop(device: Device): Promise<void> {
   const { screen } = device;
   await screen.swipe('down');
