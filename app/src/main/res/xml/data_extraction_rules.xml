@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Data extraction rules for Android 12+ (S+). Covers cloud auto-backup and device-to-device
-    transfer. We intentionally allow both for the small amount of state the app keeps:
-    the selected mock location and a couple of boolean preference flags.
+    Data extraction rules for Android 12+ (S+). Cloud backup is disabled — mock location
+    coordinates are trivially reconstructable. Device-to-device transfer during setup is
+    lower risk and kept enabled.
 -->
 <data-extraction-rules>
-    <cloud-backup>
-        <include domain="file" path="datastore/m_l.preferences_pb" />
-    </cloud-backup>
+    <cloud-backup />
     <device-transfer>
         <include domain="file" path="datastore/m_l.preferences_pb" />
     </device-transfer>
