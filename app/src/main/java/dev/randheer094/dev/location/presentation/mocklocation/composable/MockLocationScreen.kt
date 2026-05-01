@@ -278,7 +278,7 @@ private fun TopBar(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Add,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.fab_add_location),
                     modifier = Modifier.size(20.dp),
                 )
             }

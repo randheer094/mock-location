@@ -84,7 +84,7 @@ fun SetupInstruction(onGotIt: () -> Unit) {
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.cd_navigate_back),
                         tint = colors.text,
                     )
                 }

@@ -41,6 +41,7 @@
     <string name="cd_start_mocking">Start mocking</string>
     <string name="cd_stop_mocking">Stop mocking</string>
     <string name="cd_close_sheet">Close</string>
+    <string name="cd_navigate_back">Navigate back</string>
 
     <!-- Home screen -->
     <string name="wordmark_mock">mock</string>
