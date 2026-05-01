@@ -37,6 +37,7 @@ class NotificationUtils(private val context: Context) {
             .setSmallIcon(R.drawable.ic_location)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
+            .setVisibility(NotificationCompat.VISIBILITY_SECRET)
             .setContentIntent(buildContentIntent())
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setSilent(true)
