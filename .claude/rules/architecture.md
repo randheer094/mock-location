@@ -45,21 +45,26 @@ All UI is Jetpack Compose.
 - Material 3 (`androidx.compose.material3`) is the design system;
   dynamic color on Android 12+, dark theme always supported.
 
-## DI: Hilt
+## DI: Koin
 
-Hilt is the DI framework.
+Koin is the DI framework for this project.
 
-- `Application` is `@HiltAndroidApp`. The host `Activity` is
-  `@AndroidEntryPoint`. ViewModels are `@HiltViewModel`.
-- Hilt's annotation processor runs through KSP, not kapt.
-- Collaborators reach the class via `@Inject constructor(...)`.
-- Bindings live in `@Module @InstallIn(<Component>::class)`; use
-  `@Binds` for interface→impl wiring.
-- Scope with intent: `@Singleton` for app-lifetime,
-  `@ActivityRetainedScoped` for ViewModel-shared state,
-  `@ViewModelScoped` for per-screen collaborators. Default to the
-  narrowest scope that works.
-- Tests use `@HiltAndroidTest` + `@UninstallModules` to swap fakes.
+> **Exemption note**: Hilt is the standard for multi-module Android
+> projects, but Koin is exempted here. This is a single-module app
+> and migrating to Hilt pre-release would be high-risk churn with no
+> user-facing benefit.
+
+- All bindings are declared in `di/MockLocationModules.kt` as a
+  single `appModule`. Use `single {}` for app-lifetime singletons,
+  `factory {}` for use cases, and `viewModel {}` for ViewModels.
+- `MockLocationApp.onCreate` calls
+  `startKoin { androidContext(this); modules(appModule) }` to
+  bootstrap the container.
+- Services and other non-Compose entry points use
+  `by inject<T>()` for lazy property injection.
+- Composables obtain ViewModels via `koinViewModel()` (or the
+  standard `viewModel()` delegate wired through Koin's ViewModel
+  integration).
 
 ## Coroutines & Flow
 
