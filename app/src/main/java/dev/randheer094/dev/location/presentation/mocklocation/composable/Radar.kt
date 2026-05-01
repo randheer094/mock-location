@@ -32,6 +32,7 @@ import dev.randheer094.dev.location.presentation.theme.MockLocationTheme
 fun Radar(modifier: Modifier = Modifier) {
     val colors = LocalMockColors.current
     var isRunning by remember { mutableStateOf(true) }
+    @Suppress("DEPRECATION")
     val lifecycleOwner = LocalLifecycleOwner.current
 
     DisposableEffect(lifecycleOwner) {

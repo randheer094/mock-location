@@ -20,7 +20,7 @@ import dev.randheer094.dev.location.presentation.utils.NotificationUtils
 import dev.randheer094.dev.location.presentation.utils.PermissionUtils
 import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.serialization.json.Json
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 
