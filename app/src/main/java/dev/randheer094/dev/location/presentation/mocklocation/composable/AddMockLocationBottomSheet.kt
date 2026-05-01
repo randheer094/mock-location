@@ -37,6 +37,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -248,7 +250,8 @@ fun AddMockLocationBottomSheet(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .testTag("lat_field"),
+                        .testTag("lat_field")
+                        .semantics { contentDescription = "Latitude input" },
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
@@ -286,7 +289,8 @@ fun AddMockLocationBottomSheet(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .testTag("lng_field"),
+                        .testTag("lng_field")
+                        .semantics { contentDescription = "Longitude input" },
                 )
             }
         }

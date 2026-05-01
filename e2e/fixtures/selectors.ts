@@ -26,6 +26,11 @@ export const Strings = {
     nameLabel: 'NAME',
     latitudeLabel: 'LATITUDE',
     longitudeLabel: 'LONGITUDE',
+    // Accessibility content descriptions on the OutlinedTextField wrappers
+    // (Modifier.semantics { contentDescription = ... }) — needed because EditText
+    // nodes are not surfaced in mobilewright's accessibility tree.
+    latitudeInputCd: 'Latitude input',
+    longitudeInputCd: 'Longitude input',
     saveCta: 'Set mock location',
     closeCd: 'Close',
     validationLatOutOfRange: 'Latitude out of range',
