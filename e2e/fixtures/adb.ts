@@ -24,7 +24,7 @@ export function parseLastLocation(dumpsysOutput: string): MockedLocation | null 
   return { lat: parseFloat(match[1]), lng: parseFloat(match[2]) };
 }
 
-async function shell(cmd: string): Promise<ShellResult> {
+export async function shell(cmd: string): Promise<ShellResult> {
   try {
     const { stdout } = await execFileAsync('adb', ['shell', cmd]);
     return { stdout, exitCode: 0 };
