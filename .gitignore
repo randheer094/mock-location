@@ -23,3 +23,6 @@ keystore.properties
 
 # Claude Code runtime artifacts
 .claude/scheduled_tasks.lock
+
+# Mobilewright E2E
+/e2e/node_modules

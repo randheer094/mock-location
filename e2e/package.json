@@ -1,0 +1,20 @@
+{
+  "name": "mock-location-e2e",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "mobilewright test",
+    "test:headed": "mobilewright test --reporter=list",
+    "doctor": "mobilewright doctor"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "mobilewright": "^0.0.29",
+    "@mobilewright/test": "^0.0.29",
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  }
+}
