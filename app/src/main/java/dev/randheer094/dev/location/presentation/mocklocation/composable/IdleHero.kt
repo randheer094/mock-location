@@ -32,6 +32,7 @@ import dev.randheer094.dev.location.presentation.mocklocation.state.UiState
 import dev.randheer094.dev.location.presentation.theme.InterFamily
 import dev.randheer094.dev.location.presentation.theme.LocalMockColors
 import dev.randheer094.dev.location.presentation.theme.MockLocationTheme
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun IdleHero(
@@ -149,7 +150,7 @@ private fun IdleHeroWithLocationLightPreview() {
                 showInstructions = false,
                 status = false,
                 hasNotificationPermission = true,
-                items = emptyList(),
+                items = persistentListOf(),
                 elapsedLabel = "",
                 selected = MockLocation(name = "Singapore, Singapore", lat = 1.3521, long = 103.8198),
             ),
@@ -167,7 +168,7 @@ private fun IdleHeroNoLocationDarkPreview() {
                 showInstructions = false,
                 status = false,
                 hasNotificationPermission = true,
-                items = emptyList(),
+                items = persistentListOf(),
                 elapsedLabel = "",
                 selected = null,
             ),

@@ -29,7 +29,7 @@
         errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-9.1.0-bin.zip"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/wrapper/gradle-wrapper.properties"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/wrapper/gradle-wrapper.properties"
             line="4"
             column="17"/>
     </issue>
@@ -40,7 +40,7 @@
         errorLine1="agp = &quot;9.0.0&quot;"
         errorLine2="      ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="2"
             column="7"/>
     </issue>
@@ -51,9 +51,20 @@
         errorLine1="coreKtx = &quot;1.17.0&quot;"
         errorLine2="          ~~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="4"
             column="11"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.9.3 is available: 2.10.0"
+        errorLine1="lifecycleRuntimeKtx = &quot;2.9.3&quot;"
+        errorLine2="                      ~~~~~~~">
+        <location
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
+            line="5"
+            column="23"/>
     </issue>
 
     <issue
@@ -62,7 +73,7 @@
         errorLine1="lifecycleRuntimeKtx = &quot;2.9.3&quot;"
         errorLine2="                      ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="5"
             column="23"/>
     </issue>
@@ -73,7 +84,7 @@
         errorLine1="activityCompose = &quot;1.10.1&quot;"
         errorLine2="                  ~~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="6"
             column="19"/>
     </issue>
@@ -84,7 +95,7 @@
         errorLine1="composeBom = &quot;2025.08.01&quot;"
         errorLine2="             ~~~~~~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="7"
             column="14"/>
     </issue>
@@ -95,7 +106,7 @@
         errorLine1="lifecycleViewModelCompose = &quot;2.9.3&quot;"
         errorLine2="                            ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="8"
             column="29"/>
     </issue>
@@ -106,7 +117,7 @@
         errorLine1="datastore = &quot;1.1.7&quot;"
         errorLine2="            ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="11"
             column="13"/>
     </issue>
@@ -117,7 +128,7 @@
         errorLine1="datastore = &quot;1.1.7&quot;"
         errorLine2="            ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="11"
             column="13"/>
     </issue>
@@ -128,7 +139,7 @@
         errorLine1="androidxTestRunner = &quot;1.6.2&quot;"
         errorLine2="                     ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="15"
             column="22"/>
     </issue>
@@ -139,7 +150,7 @@
         errorLine1="androidxTestExtJunit = &quot;1.2.1&quot;"
         errorLine2="                       ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="16"
             column="24"/>
     </issue>
@@ -150,7 +161,7 @@
         errorLine1="androidxTestRules = &quot;1.6.1&quot;"
         errorLine2="                    ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="17"
             column="21"/>
     </issue>
@@ -161,7 +172,7 @@
         errorLine1="androidxTestCore = &quot;1.6.1&quot;"
         errorLine2="                   ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="18"
             column="20"/>
     </issue>
@@ -172,7 +183,7 @@
         errorLine1="espresso = &quot;3.6.1&quot;"
         errorLine2="           ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="19"
             column="12"/>
     </issue>
@@ -183,7 +194,7 @@
         errorLine1="kotlin = &quot;2.2.10&quot;"
         errorLine2="         ~~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="3"
             column="10"/>
     </issue>
@@ -194,7 +205,7 @@
         errorLine1="kotlin = &quot;2.2.10&quot;"
         errorLine2="         ~~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="3"
             column="10"/>
     </issue>
@@ -205,7 +216,7 @@
         errorLine1="kotlin = &quot;2.2.10&quot;"
         errorLine2="         ~~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="3"
             column="10"/>
     </issue>
@@ -216,7 +227,7 @@
         errorLine1="kotlinSerialization = &quot;1.9.0&quot;"
         errorLine2="                      ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="9"
             column="23"/>
     </issue>
@@ -227,7 +238,7 @@
         errorLine1="koin = &quot;4.1.1&quot;"
         errorLine2="       ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="10"
             column="8"/>
     </issue>
@@ -238,7 +249,7 @@
         errorLine1="koin = &quot;4.1.1&quot;"
         errorLine2="       ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="10"
             column="8"/>
     </issue>
@@ -249,7 +260,7 @@
         errorLine1="koin = &quot;4.1.1&quot;"
         errorLine2="       ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="10"
             column="8"/>
     </issue>
@@ -260,7 +271,7 @@
         errorLine1="koin = &quot;4.1.1&quot;"
         errorLine2="       ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="10"
             column="8"/>
     </issue>
@@ -271,7 +282,7 @@
         errorLine1="koin = &quot;4.1.1&quot;"
         errorLine2="       ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="10"
             column="8"/>
     </issue>
@@ -282,9 +293,20 @@
         errorLine1="kotlinxCoroutines = &quot;1.9.0&quot;"
         errorLine2="                    ~~~~~~~">
         <location
-            file="$HOME/.velocity/workspace/ARC-205/gradle/libs.versions.toml"
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
             line="14"
             column="21"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.jetbrains.kotlinx:kotlinx-collections-immutable than 0.3.8 is available: 0.4.0"
+        errorLine1="kotlinxCollectionsImmutable = &quot;0.3.8&quot;"
+        errorLine2="                              ~~~~~~~">
+        <location
+            file="$HOME/.velocity/workspace/ARC-206/gradle/libs.versions.toml"
+            line="24"
+            column="31"/>
     </issue>
 
     <issue
