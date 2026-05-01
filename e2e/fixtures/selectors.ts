@@ -1,0 +1,37 @@
+export const Strings = {
+  setupScreen: {
+    headlineLine1: 'Let Android know',
+    headlineLine2: 'we\'re the boss of GPS.',
+    step1Title: 'Open Developer Options',
+    step2Title: 'Find "Select mock location app"',
+    step3Title: 'Pick Mock Location',
+    openDevOptionsCta: 'Open developer options',
+    checkAgainCta: 'I\'ve done this — check again',
+  },
+  home: {
+    wordmarkMock: 'mock',
+    wordmarkLocation: 'location',
+    statusReady: 'Ready',
+    statusMockOff: 'Mock location off',
+    statusLive: 'LIVE · GPS + NET',
+    presetSection: 'PRESET LOCATIONS',
+    sortToggleAZ: 'Sort · A–Z',
+    sortToggleZA: 'Sort · Z–A',
+    addLocationFab: 'New location',
+    stopBroadcastingCta: 'Stop broadcasting',
+    startCta: 'Start',
+  },
+  customSheet: {
+    title: 'Custom location',
+    nameLabel: 'NAME',
+    latitudeLabel: 'LATITUDE',
+    longitudeLabel: 'LONGITUDE',
+    saveCta: 'Set mock location',
+    closeCd: 'Close',
+    validationLatOutOfRange: 'Latitude out of range',
+    validationLngOutOfRange: 'Longitude out of range',
+  },
+  notification: {
+    title: 'Mocking Location',
+  },
+} as const;
