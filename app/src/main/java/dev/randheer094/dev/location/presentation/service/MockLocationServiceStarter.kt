@@ -30,6 +30,6 @@ class MockLocationServiceStarter(private val context: Context) {
         val intent = Intent(context, MockLocationService::class.java).apply {
             action = MockLocationService.ACTION_STOP
         }
-        context.startService(intent)
+        ContextCompat.startForegroundService(context, intent)
     }
 }

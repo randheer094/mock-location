@@ -72,14 +72,26 @@ class MockLocationService : Service(), IMockLocationService {
                 }
 
                 startMocking(MockLocation(name = name, lat = lat, long = lng))
+                return START_STICKY
             }
             ACTION_STOP -> {
                 stopMocking()
                 stopSelf()
                 return START_NOT_STICKY
             }
+            else -> {
+                // Null or unrecognized intent — Android re-delivered after killing a
+                // START_STICKY service. Satisfy the foreground contract then stop so the
+                // service doesn't linger with no work to do.
+                notificationUtils.createNotificationChannel()
+                startForeground(
+                    NotificationUtils.NOTIFICATION_ID,
+                    notificationUtils.createForegroundNotification(lat = 0.0, long = 0.0),
+                )
+                stopSelf()
+                return START_NOT_STICKY
+            }
         }
-        return START_STICKY
     }
 
     override fun onDestroy() {
