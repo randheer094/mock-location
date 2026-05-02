@@ -18,15 +18,19 @@ export const test = base.extend<Fixtures>({
     await shell(`pm grant ${PKG} android.permission.POST_NOTIFICATIONS`);
     await shell(`appops set ${PKG} android:mock_location allow`);
     await shell(`am force-stop ${PKG}`);
-    // Explicitly launch MainActivity instead of relying on android.launch()
-    // resolving the launcher activity — LeakCanary registers an activity in
-    // the same package with CATEGORY_LAUNCHER, and after a leaky test it can
-    // win the resolution.
+
+    const device = await android.launch({ bundleId: PKG });
+
+    // mobilewright's android.launch() resolves the launcher activity by
+    // category, and LeakCanary registers a CATEGORY_LAUNCHER activity in
+    // our package; after a leaky earlier test it wins the resolution.
+    // Force MainActivity to the front after the driver session is up, so
+    // the test always lands on our actual UI.
     await shell(
       `am start -n ${PKG}/dev.randheer094.dev.location.presentation.main.MainActivity`,
     );
-
-    const device = await android.launch({ bundleId: PKG });
+    // Brief settle for the activity transition.
+    await new Promise(r => setTimeout(r, 500));
     await use(device);
     await device.close();
   },
