@@ -4,8 +4,7 @@
 
 ## File-level pre-conditions
 
-1. Run `fixtures/device-setup.md` steps 1–8.
-2. Run `fixtures/home.md` → `goToHome`.
+Run `fixtures/device-setup.md` → **Standard pre-conditions**.
 
 ---
 

@@ -4,8 +4,7 @@
 
 ## File-level pre-conditions (run before every test in this file)
 
-1. Run `fixtures/device-setup.md` steps 1–8.
-2. Run `fixtures/home.md` → `goToHome`.
+Run `fixtures/device-setup.md` → **Standard pre-conditions**.
 
 ## Helper: `dismissSheetIfOpen`
 
@@ -49,6 +48,10 @@ Coordinates: SF — `lat = 37.7749`, `lng = -122.4194`.
 8. **Poll until coords match** (5s timeout, ±0.01° tolerance):
    - **MCP:** `location_get_last_known()` → `{ lat, lng, ... }`.
    - **Assert:** `lat ≈ 37.7749` (±0.01) AND `lng ≈ -122.4194` (±0.01).
+
+   > The `±0.01` tolerance matches Playwright's `closeTo(..., 2)` (decimal
+   > places) in `e2e/tests/03-custom-coordinates.test.ts`. The mock provider
+   > rounds; exact equality fails.
 
 ---
 

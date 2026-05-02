@@ -7,31 +7,32 @@ description: Use when the user asks to run the Android end-to-end suite for the 
 
 Black-box tests for the mock-location Android app, expressed as Markdown
 runbooks executed via the `velocity-test-mobile` MCP server
-(`velocity-test-mobile >= 0.3.0`). 18 tests across 8 files in
+(`velocity-test-mobile >= 0.3.0`). 17 tests across 7 files in
 [`tests/`](tests/), with shared helpers in [`fixtures/`](fixtures/).
 
-## Prerequisites — verify before running
+## Preflight — run these checks before walking any test
 
-Confirm all three. If any fails, fix it first; do **not** stub or skip.
+Run all three. Any failure: stop, report, do **not** start tests. The skill
+does not boot the emulator or build the APK on the user's behalf.
 
-1. **Emulator booted.** `adb devices -l` lists at least one
-   `emulator-*` in state `device`. If none, boot one via
+1. **MCP connected.** `ToolSearch select:mcp__velocity-test-mobile__app_launch`
+   returns a schema. Failure: `velocity-test-mobile` is not reachable — ask
+   the user to check `claude mcp list`.
+2. **Emulator booted.** Bash `adb devices -l` shows at least one
+   `emulator-*` line in state `device`. Failure: ask the user to run
    `android emulator start <avd>`.
-2. **Debug APK installed.** Verify via
-   `app_list` → contains `dev.randheer094.dev.location.debug`. If absent:
+3. **Debug APK installed.** `mcp__velocity-test-mobile__app_list` contains
+   `dev.randheer094.dev.location.debug`. Failure: ask the user to run
    ```bash
    ./gradlew :app:assembleDebug
    adb install -r -t -g app/build/outputs/apk/debug/app-debug.apk
    ```
-3. **MCP connected.** `ToolSearch select:mcp__velocity-test-mobile__app_launch`
-   must return a schema. If not, the `velocity-test-mobile` MCP server isn't
-   reachable in this session — ask the user to check `claude mcp list`.
 
 ## Mapping user requests → what to run
 
 | User asks | What to do |
 | --- | --- |
-| "Run all e2e tests" / "run the suite" | Walk `tests/00..07.md` in order. Continue past failures; report a results table at the end. |
+| "Run all e2e tests" / "run the suite" | Walk `tests/01..07.md` in order. Continue past failures; report a results table at the end. |
 | "Run `tests/03-custom-coordinates.md`" | Walk every test in that file; report per-test pass/fail. |
 | "Run test 2 of 02-preset-mocking" | Walk just that one test. |
 | "Smoke test" | Run only `tests/06-permissions.md` (cheapest signal). |
@@ -47,13 +48,27 @@ For every test in a file:
    `fixtures/mock-app.md`).
 2. Resolve schemas for unfamiliar MCP tools the first time you hit
    them via `ToolSearch select:mcp__velocity-test-mobile__<name>`.
-3. Apply **Pre-conditions** in order. For most tests this is
-   `device-setup.md` steps 1–8, then `home.md → goToHome`.
+3. Apply **Pre-conditions** in order. Most files reference
+   `fixtures/device-setup.md → Standard pre-conditions`, which expands
+   to steps 1–8 plus `home.md → goToHome`.
 4. Walk **Steps** top-to-bottom. Each step is either an MCP tool call
    or a runbook helper — expand the helper inline when it appears.
 5. On any failed assertion: capture `screen_capture` and `print_tree`
    for evidence, mark the test FAIL, **continue to the next test**.
 6. Apply per-test **Cleanup** if listed.
+
+## Standard timeouts
+
+Picked once and reused across the suite. Raise locally if your device
+flakes; do not lower without a reason.
+
+| Timeout | Used for |
+| --- | --- |
+| `1000` ms | Negative assertions ("X must not appear"). |
+| `3000` ms | Sheet dismiss, activity-top fast checks. |
+| `5000` ms | Default `wait_until_visible`, `service_wait_for_state`, location/notification polls. |
+| `10000` ms | Sheet-driven flows (custom-coordinate save → home transition). |
+| `15000` ms | Settings app navigation (slow on cold start). |
 
 ## Failure-handling rules
 
@@ -77,7 +92,6 @@ Always end the run with a results table the user can scan:
 
 ```
 Test                                                 Result
-tests/00-adb-parser.md                               SKIP (pure regex, no device)
 tests/01-setup-screen.md test 1                      PASS
 tests/01-setup-screen.md test 2                      PASS
 tests/02-preset-mocking.md test 1                    PASS
@@ -106,8 +120,6 @@ A full pass is ~10 minutes against a single emulator.
   `resetMockApp` (appops grant + UI fallback).
 - [`fixtures/home.md`](fixtures/home.md) — `goToHome`, `scrollToTop`,
   `stopIfMocking`, `startMockingDefaultCity`.
-- [`fixtures/adb.md`](fixtures/adb.md) — closed-out reference mapping
-  the original `e2e/fixtures/adb.ts` helpers to their MCP equivalents.
 
 ## Source provenance
 

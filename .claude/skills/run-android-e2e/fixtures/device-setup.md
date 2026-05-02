@@ -25,6 +25,18 @@ earlier test.
 7. **MCP:** `activity_start(bundle_id = "dev.randheer094.dev.location.debug", activity = "dev.randheer094.dev.location.presentation.main.MainActivity")` — pin our activity foreground.
 8. **MCP:** `wait_for_idle` — let the activity transition settle.
 
+## Standard pre-conditions
+
+Most test files (`tests/02..05`, `tests/07`) reference this block instead of
+spelling the pair out:
+
+1. Run **Steps** above (1–8).
+2. Run `fixtures/home.md` → `goToHome`.
+
+`tests/01` overrides this (it wants the wizard visible) and `tests/06` uses
+**Steps** alone (it exercises `goToHome` inside the test). Both spell out
+their own pre-conditions.
+
 ## Cleanup (after every test)
 
 There is no per-test teardown beyond what step 1–6 of the next test will do. For
