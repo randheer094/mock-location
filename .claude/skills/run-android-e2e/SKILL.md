@@ -15,18 +15,24 @@ runbooks executed via the `velocity-test-mobile` MCP server
 Run all three. Any failure: stop, report, do **not** start tests. The skill
 does not boot the emulator or build the APK on the user's behalf.
 
+All three checks go through MCP tools or the gradle wrapper — no raw
+`adb` calls, no absolute SDK paths, so the skill is portable across
+machines and does not trip permission prompts.
+
 1. **MCP connected.** `ToolSearch select:mcp__velocity-test-mobile__app_launch`
    returns a schema. Failure: `velocity-test-mobile` is not reachable — ask
    the user to check `claude mcp list`.
-2. **Emulator booted.** Bash `adb devices -l` shows at least one
-   `emulator-*` line in state `device`. Failure: ask the user to run
-   `android emulator start <avd>`.
+2. **Emulator booted.** `mcp__velocity-test-mobile__device_list` returns
+   at least one device. Failure: ask the user to run
+   `android emulator start <avd>` (the `android` CLI is on PATH for
+   this project).
 3. **Debug APK installed.** `mcp__velocity-test-mobile__app_list` contains
    `dev.randheer094.dev.location.debug`. Failure: ask the user to run
    ```bash
-   ./gradlew :app:assembleDebug
-   adb install -r -t -g app/build/outputs/apk/debug/app-debug.apk
+   ./gradlew :app:installDebug
    ```
+   (assembles + installs in one step; uses the gradle wrapper, no SDK
+   path dependency).
 
 ## Mapping user requests → what to run
 

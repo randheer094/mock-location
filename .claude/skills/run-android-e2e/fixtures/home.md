@@ -12,8 +12,10 @@ Up to 3 attempts:
 
 1. Run `ensureForegroundIsOurApp` (see `device-setup.md`).
 2. **MCP:** `wait_for_idle` (give recomposition a beat to settle).
-3. **MCP:** check `find_node(text = "I've done this — check again")` with a
-   short timeout — if visible, `click` it.
+3. **MCP:** check `find_node(textContains = "check again")` with a short
+   timeout — if visible, `click` it. (Matches the curly-apostrophe CTA
+   defined in `selectors.md → checkAgainCta` without forcing every
+   caller to type U+2019; `textContains` is unambiguous on this screen.)
 4. **MCP:** `wait_until_visible(text = "Mock location off", timeout_ms = 5000)`.
    If satisfied → return.
 5. After 3 unsuccessful attempts, **assert** `assert_visible(text = "Mock location off")` — fail with a clear error.
