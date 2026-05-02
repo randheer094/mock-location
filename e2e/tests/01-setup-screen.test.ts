@@ -11,7 +11,12 @@ test.describe('setup screen', () => {
     // is visible, then bounce the activity to pick up the change.
     await resetMockApp(device);
     await device.terminateApp(PKG);
-    await device.launchApp(PKG);
+    // Explicit am start MainActivity (not device.launchApp) so LeakCanary's
+    // CATEGORY_LAUNCHER activity doesn't win launcher resolution.
+    await shell(
+      `am start -n ${PKG}/dev.randheer094.dev.location.presentation.main.MainActivity`,
+    );
+    await new Promise(r => setTimeout(r, 500));
   });
 
   test('shows setup wizard when mock-app is not selected', async ({ device }) => {
@@ -24,7 +29,14 @@ test.describe('setup screen', () => {
 
   test('Open Settings CTA dispatches developer options intent', async ({ device }) => {
     const { screen } = device;
-    await screen.getByText(Strings.setupScreen.openDevOptionsCta).tap();
+    // The card title for step 1 ("Open Developer Options") matches by case-
+    // insensitive prefix against the CTA label "Open developer options",
+    // which makes getByText flaky. Target the button by its content
+    // description (added via Modifier.semantics) instead.
+    await expect(screen.getByLabel(Strings.setupScreen.openDevOptionsCta)).toBeVisible({
+      timeout: 15_000,
+    });
+    await screen.getByLabel(Strings.setupScreen.openDevOptionsCta).tap();
 
     const top = await shell('dumpsys activity activities | grep topResumedActivity');
     expect(top.stdout).toContain('com.android.settings');

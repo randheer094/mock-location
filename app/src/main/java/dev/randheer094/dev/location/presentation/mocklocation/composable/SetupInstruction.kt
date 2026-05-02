@@ -33,6 +33,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -214,6 +216,7 @@ fun SetupInstruction(onGotIt: () -> Unit) {
                     .padding(top = 18.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
+                val openDevOptionsLabel = stringResource(R.string.btn_open_dev_options)
                 Button(
                     onClick = {
                         (context as? Activity)?.startActivity(
@@ -222,7 +225,8 @@ fun SetupInstruction(onGotIt: () -> Unit) {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(54.dp),
+                        .height(54.dp)
+                        .semantics { contentDescription = openDevOptionsLabel },
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colors.accent,
@@ -241,11 +245,13 @@ fun SetupInstruction(onGotIt: () -> Unit) {
                     )
                 }
 
+                val checkAgainLabel = stringResource(R.string.btn_check_again)
                 OutlinedButton(
                     onClick = onGotIt,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .height(48.dp)
+                        .semantics { contentDescription = checkAgainLabel },
                     shape = RoundedCornerShape(14.dp),
                     border = BorderStroke(1.dp, colors.border),
                     colors = ButtonDefaults.outlinedButtonColors(
