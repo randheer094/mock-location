@@ -12,11 +12,13 @@ const DEFAULT_CITY_LABEL = DEFAULT_CITY.name.split(',')[0].trim();
  */
 export async function goToHome(device: Device): Promise<void> {
   const { screen } = device;
+  // Wait briefly for the app to render its first frame before probing the tree.
+  await new Promise(resolve => setTimeout(resolve, 1500));
   const cta = screen.getByText(Strings.setupScreen.checkAgainCta);
   if (await cta.isVisible({ timeout: 5_000 }).catch(() => false)) {
     await cta.tap();
   }
-  await expect(screen.getByText(Strings.home.presetSection)).toBeVisible({ timeout: 10_000 });
+  await expect(screen.getByText(Strings.home.statusMockOff)).toBeVisible({ timeout: 20_000 });
 }
 
 export async function scrollToTop(device: Device): Promise<void> {

@@ -39,4 +39,8 @@ export const Strings = {
   notification: {
     title: 'Mocking Location',
   },
+  permissionRationale: {
+    title: 'Notification Permission required',
+    cta: 'Allow Notifications!',
+  },
 } as const;
