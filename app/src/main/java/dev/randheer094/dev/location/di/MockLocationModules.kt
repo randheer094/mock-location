@@ -1,5 +1,6 @@
 package dev.randheer094.dev.location.di
 
+import android.app.AppOpsManager
 import android.content.Context
 import android.location.LocationManager
 import androidx.datastore.core.DataStore
@@ -16,6 +17,7 @@ import dev.randheer094.dev.location.presentation.mocklocation.MockLocationViewMo
 import dev.randheer094.dev.location.presentation.mocklocation.state.UiStateMapper
 import dev.randheer094.dev.location.presentation.service.MockLocationServiceStarter
 import dev.randheer094.dev.location.presentation.utils.LocationUtils
+import dev.randheer094.dev.location.presentation.utils.MockAppAuthorizationUtils
 import dev.randheer094.dev.location.presentation.utils.NotificationUtils
 import dev.randheer094.dev.location.presentation.utils.PermissionUtils
 import dev.shreyaspatil.permissionFlow.PermissionFlow
@@ -43,7 +45,10 @@ val appModule = module {
     factory { SelectMockLocationUseCase(get(), get()) }
     factory { SelectedMockLocationUseCase(get(), get()) }
     factory { SetSetupInstructionStatusUseCase(get()) }
-    factory { SetupInstructionStatusUseCase(get()) }
+    factory {
+        val auth: MockAppAuthorizationUtils = get()
+        SetupInstructionStatusUseCase(get(), auth::isAuthorized)
+    }
 
     // UiStateMapper is now an object, no need to instantiate
     single { UiStateMapper }
@@ -62,5 +67,9 @@ val appModule = module {
     single {
         get<Context>().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
+    single {
+        get<Context>().getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+    }
+    single { MockAppAuthorizationUtils(get(), get()) }
     single { PermissionFlow.getInstance() }
 }
