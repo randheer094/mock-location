@@ -49,6 +49,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -267,9 +269,12 @@ private fun TopBar(
                 )
                 .size(40.dp),
         ) {
+            val fabLabel = stringResource(R.string.fab_add_location)
             FilledIconButton(
                 onClick = onAddClick,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .semantics { contentDescription = fabLabel },
                 shape = RoundedCornerShape(12.dp),
                 colors = IconButtonDefaults.filledIconButtonColors(
                     containerColor = colors.accent,
@@ -278,7 +283,7 @@ private fun TopBar(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Add,
-                    contentDescription = stringResource(R.string.fab_add_location),
+                    contentDescription = null,
                     modifier = Modifier.size(20.dp),
                 )
             }

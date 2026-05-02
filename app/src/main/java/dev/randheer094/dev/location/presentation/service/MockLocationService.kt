@@ -74,6 +74,15 @@ class MockLocationService : Service(), IMockLocationService {
                 return START_STICKY
             }
             ACTION_STOP -> {
+                // The starter dispatches ACTION_STOP via startForegroundService, which
+                // imposes the 5-second startForeground contract on this onStartCommand.
+                // Promote briefly so the system does not ANR us, then immediately tear
+                // the foreground notification down and stop the service.
+                notificationUtils.createNotificationChannel()
+                startForeground(
+                    NotificationUtils.NOTIFICATION_ID,
+                    notificationUtils.createForegroundNotification(lat = 0.0, long = 0.0),
+                )
                 stopMocking()
                 stopSelf()
                 return START_NOT_STICKY
