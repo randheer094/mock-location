@@ -1,13 +1,14 @@
 import type { Device } from 'mobilewright';
+import { expect } from '@mobilewright/test';
 import { Strings } from './selectors';
 import { DEFAULT_CITY } from './constants';
 
 const DEFAULT_CITY_LABEL = DEFAULT_CITY.name.split(',')[0].trim();
 
 /**
- * Dismiss the one-time setup wizard if it is on screen, leaving the home
- * screen visible. No-op when the wizard is already dismissed (e.g. when
- * called more than once in the same session).
+ * Dismiss the one-time setup wizard if it is on screen, then wait for a
+ * stable home-screen marker before returning. No-op when the wizard is
+ * already dismissed.
  */
 export async function goToHome(device: Device): Promise<void> {
   const { screen } = device;
@@ -15,6 +16,7 @@ export async function goToHome(device: Device): Promise<void> {
   if (await cta.isVisible({ timeout: 5_000 }).catch(() => false)) {
     await cta.tap();
   }
+  await expect(screen.getByText(Strings.home.presetSection)).toBeVisible({ timeout: 10_000 });
 }
 
 export async function scrollToTop(device: Device): Promise<void> {
