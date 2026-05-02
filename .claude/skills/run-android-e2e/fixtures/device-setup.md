@@ -7,8 +7,12 @@ Per-test reset and launch. Run before **every** test in `tests/`. Mirrors the
 ## Why this exists
 
 `app_clear_data` wipes DataStore + runtime perms; granting POST_NOTIFICATIONS
-and mock-app appops _before_ launch ensures the app's startup checks see the
-mock-app authorised, so we never see a transient wizard frame.
+and mock-app appops _before_ launch lets the app's setup-instruction gate
+(`SetupInstructionStatusUseCase`) read `MODE_ALLOWED` on the first DataStore
+emission and skip the wizard. The gate combines a stored "force-show" flag
+(default `false`) with a live `AppOpsManager` check, so the wizard is hidden
+on cold launch when appops is allowed and shown otherwise — no "check again"
+tap required for the happy path.
 
 `activity_start MainActivity` after `app_launch` defeats LeakCanary's
 `CATEGORY_LAUNCHER` activity, which can win launcher resolution after a leaky
