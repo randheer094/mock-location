@@ -12,13 +12,21 @@ const DEFAULT_CITY_LABEL = DEFAULT_CITY.name.split(',')[0].trim();
  */
 export async function goToHome(device: Device): Promise<void> {
   const { screen } = device;
-  // Wait briefly for the app to render its first frame before probing the tree.
-  await new Promise(resolve => setTimeout(resolve, 1500));
-  const cta = screen.getByText(Strings.setupScreen.checkAgainCta);
-  if (await cta.isVisible({ timeout: 5_000 }).catch(() => false)) {
-    await cta.tap();
+  // Up to 3 attempts to dismiss the wizard. The CTA tap occasionally lands
+  // mid-recomposition on a fresh launch and the screen does not transition;
+  // a re-tap after a short delay reliably moves things along.
+  for (let i = 0; i < 3; i++) {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    const cta = screen.getByText(Strings.setupScreen.checkAgainCta);
+    if (await cta.isVisible({ timeout: 5_000 }).catch(() => false)) {
+      await cta.tap();
+    }
+    const home = screen.getByText(Strings.home.statusMockOff);
+    if (await home.isVisible({ timeout: 5_000 }).catch(() => false)) {
+      return;
+    }
   }
-  await expect(screen.getByText(Strings.home.statusMockOff)).toBeVisible({ timeout: 20_000 });
+  await expect(screen.getByText(Strings.home.statusMockOff)).toBeVisible({ timeout: 5_000 });
 }
 
 export async function scrollToTop(device: Device): Promise<void> {

@@ -18,6 +18,13 @@ export const test = base.extend<Fixtures>({
     await shell(`pm grant ${PKG} android.permission.POST_NOTIFICATIONS`);
     await shell(`appops set ${PKG} android:mock_location allow`);
     await shell(`am force-stop ${PKG}`);
+    // Explicitly launch MainActivity instead of relying on android.launch()
+    // resolving the launcher activity — LeakCanary registers an activity in
+    // the same package with CATEGORY_LAUNCHER, and after a leaky test it can
+    // win the resolution.
+    await shell(
+      `am start -n ${PKG}/dev.randheer094.dev.location.presentation.main.MainActivity`,
+    );
 
     const device = await android.launch({ bundleId: PKG });
     await use(device);
